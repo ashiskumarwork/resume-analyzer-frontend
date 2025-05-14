@@ -102,14 +102,6 @@ const ResumeHistory = () => {
     return 0;
   });
 
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
-      </div>
-    );
-  }
-
   return (
     <div className="history-container">
       <h1>Resume History</h1>
@@ -154,7 +146,27 @@ const ResumeHistory = () => {
         </div>
       </div>
 
-      {sortedResumes.length > 0 ? (
+      {loading ? (
+        <div className="resume-list">
+          {[1, 2, 3, 4].map((item) => (
+            <div className="resume-history-card skeleton" key={item}>
+              <div className="resume-history-info">
+                <h3 className="skeleton-text"></h3>
+                <p className="skeleton-text"></p>
+                <p className="skeleton-text"></p>
+              </div>
+              <div className="resume-history-score">
+                <div className="score-circle skeleton"></div>
+                <p className="skeleton-text"></p>
+              </div>
+              <div className="resume-history-actions">
+                <div className="skeleton-button"></div>
+                <div className="skeleton-button"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : sortedResumes.length > 0 ? (
         <div className="resume-list">
           {sortedResumes.map((resume) => (
             <div className="resume-history-card" key={resume._id}>

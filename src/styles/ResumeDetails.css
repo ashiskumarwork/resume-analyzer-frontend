@@ -419,3 +419,81 @@
   background-color: var(--text-light);
   cursor: not-allowed;
 }
+/* Skeleton Loading Styles */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.5) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-text {
+  height: 1rem;
+  margin-bottom: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+}
+
+.skeleton-text:last-child {
+  width: 80%;
+}
+
+.resume-details-card.skeleton h1.skeleton-text {
+  height: 2rem;
+  width: 70%;
+  margin-bottom: 1rem;
+}
+
+.resume-details-card.skeleton .score-circle.skeleton {
+  background-color: rgba(0, 0, 0, 0.08);
+  color: transparent;
+}
+
+.skeleton-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.skeleton-tabs .tab-button.skeleton {
+  height: 2.5rem;
+  width: 120px;
+  background-color: rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+}
+
+.feedback-summary-card.skeleton {
+  min-height: 200px;
+}
+
+.feedback-summary-card.skeleton h3.skeleton-text {
+  height: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.feedback-summary-card.skeleton .skeleton-text {
+  height: 1rem;
+  margin-bottom: 1rem;
+}

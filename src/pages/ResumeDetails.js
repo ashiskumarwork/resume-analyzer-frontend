@@ -189,8 +189,57 @@ const ResumeDetails = () => {
 
   if (loading) {
     return (
-      <div className="loading-container">
-        <div className="loading-spinner"></div>
+      <div className="details-container">
+        <div className="details-header">
+          <Link to="/history" className="back-button">
+            <i className="fas fa-arrow-left"></i> Back to History
+          </Link>
+
+          <div className="details-actions">
+            <button className="download-button skeleton" disabled>
+              <i className="fas fa-download"></i> Download PDF
+            </button>
+          </div>
+        </div>
+
+        <div className="resume-details-card skeleton">
+          <div className="resume-details-header">
+            <div className="resume-details-info">
+              <h1 className="skeleton-text"></h1>
+              <p className="job-role skeleton-text"></p>
+              <p className="upload-date skeleton-text"></p>
+            </div>
+
+            <div className="resume-details-score">
+              <div className="score-circle large skeleton"></div>
+              <p className="skeleton-text"></p>
+            </div>
+          </div>
+
+          <div className="feedback-container">
+            <h2 className="skeleton-text"></h2>
+
+            <div className="feedback-tabs skeleton-tabs">
+              <div className="tab-button skeleton"></div>
+              <div className="tab-button skeleton"></div>
+              <div className="tab-button skeleton"></div>
+              <div className="tab-button skeleton"></div>
+            </div>
+
+            <div className="feedback-content">
+              <div className="feedback-overview">
+                {[1, 2, 3].map((item) => (
+                  <div className="feedback-summary-card skeleton" key={item}>
+                    <h3 className="skeleton-text"></h3>
+                    <div className="skeleton-text"></div>
+                    <div className="skeleton-text"></div>
+                    <div className="skeleton-text"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
