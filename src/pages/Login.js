@@ -5,6 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Auth.css";
 
+/**
+ * Login Page Component
+ * Handles user authentication with email and password
+ */
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -15,6 +19,10 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  /**
+   * Handle form input changes
+   * @param {Event} e - Input change event
+   */
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -22,6 +30,10 @@ const Login = () => {
     });
   };
 
+  /**
+   * Handle form submission
+   * @param {Event} e - Form submit event
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -51,6 +63,7 @@ const Login = () => {
           Welcome back! Please enter your credentials
         </p>
 
+        {/* Error message display */}
         {error && <div className="error-message">{error}</div>}
 
         <form onSubmit={handleSubmit}>

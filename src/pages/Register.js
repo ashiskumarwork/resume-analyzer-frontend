@@ -5,6 +5,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Auth.css";
 
+/**
+ * Registration Page Component
+ * Handles new user account creation
+ */
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -17,6 +21,10 @@ const Register = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
 
+  /**
+   * Handle form input changes
+   * @param {Event} e - Input change event
+   */
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -24,17 +32,20 @@ const Register = () => {
     });
   };
 
+  /**
+   * Handle form submission with validation
+   * @param {Event} e - Form submit event
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    // Validate passwords match
+    // Client-side validation
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       return;
     }
 
-    // Validate password strength
     if (formData.password.length < 6) {
       setError("Password must be at least 6 characters");
       return;
@@ -64,6 +75,7 @@ const Register = () => {
         <h2>Create an Account</h2>
         <p className="auth-subtitle">Join us to analyze your resume with AI</p>
 
+        {/* Error message display */}
         {error && <div className="error-message">{error}</div>}
 
         <form onSubmit={handleSubmit}>

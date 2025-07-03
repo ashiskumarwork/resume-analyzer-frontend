@@ -1,3 +1,7 @@
+/* ==========================================================================
+   Resume History Page Styles
+   ========================================================================== */
+
 .history-container {
   padding: 2rem 0;
 }
@@ -7,6 +11,9 @@
   margin-bottom: 2rem;
 }
 
+/* ==========================================================================
+   Search and Sort Controls
+   ========================================================================== */
 .history-controls {
   display: flex;
   justify-content: space-between;
@@ -45,6 +52,9 @@
   color: var(--text-light);
 }
 
+/* ==========================================================================
+   Sort Controls
+   ========================================================================== */
 .sort-container {
   display: flex;
   align-items: center;
@@ -77,6 +87,9 @@
   background-color: var(--background-light);
 }
 
+/* ==========================================================================
+   Resume List
+   ========================================================================== */
 .resume-list {
   display: grid;
   grid-template-columns: 1fr;
@@ -97,6 +110,9 @@
   transform: translateY(-3px);
 }
 
+/* ==========================================================================
+   Resume Information
+   ========================================================================== */
 .resume-history-info {
   flex: 1;
 }
@@ -116,6 +132,9 @@
   margin-bottom: 0.25rem;
 }
 
+/* ==========================================================================
+   Score Display
+   ========================================================================== */
 .resume-history-score {
   display: flex;
   flex-direction: column;
@@ -123,6 +142,9 @@
   margin: 0 1.5rem;
 }
 
+/* ==========================================================================
+   Action Buttons
+   ========================================================================== */
 .resume-history-actions {
   display: flex;
   flex-direction: column;
@@ -172,40 +194,9 @@
   color: white;
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-  .history-controls {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .search-container {
-    max-width: 100%;
-    margin-bottom: 1rem;
-  }
-
-  .resume-history-card {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .resume-history-info {
-    margin-bottom: 1rem;
-  }
-
-  .resume-history-info h3 {
-    max-width: 100%;
-  }
-
-  .resume-history-score {
-    margin: 1rem 0;
-  }
-
-  .resume-history-actions {
-    width: 100%;
-  }
-}
-
+/* ==========================================================================
+   Loading Spinner
+   ========================================================================== */
 .button-spinner {
   width: 16px;
   height: 16px;
@@ -217,12 +208,9 @@
   display: inline-block;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-/* Skeleton Loading Styles */
+/* ==========================================================================
+   Loading Skeleton Animations
+   ========================================================================== */
 .skeleton {
   position: relative;
   overflow: hidden;
@@ -279,4 +267,40 @@
   background-color: rgba(0, 0, 0, 0.08);
   border-radius: 6px;
   margin-bottom: 0.5rem;
+}
+
+/* ==========================================================================
+   Mobile Responsive Design
+   ========================================================================== */
+@media (max-width: 768px) {
+  .history-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-container {
+    max-width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .resume-history-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .resume-history-info {
+    margin-bottom: 1rem;
+  }
+
+  .resume-history-info h3 {
+    max-width: 100%;
+  }
+
+  .resume-history-score {
+    margin: 1rem 0;
+  }
+
+  .resume-history-actions {
+    width: 100%;
+  }
 }

@@ -3,11 +3,17 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/LandingPage.css";
 
+/**
+ * Landing Page Component
+ * Main marketing page that introduces the AI Resume Analyzer
+ * Shows different CTAs based on authentication status
+ */
 const LandingPage = () => {
   const { isAuthenticated } = useAuth();
 
   return (
     <div className="landing-container">
+      {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-content">
           <h1>Optimize Your Resume with AI</h1>
@@ -16,6 +22,7 @@ const LandingPage = () => {
             improve your resume
           </p>
 
+          {/* Dynamic CTA buttons based on auth status */}
           {isAuthenticated ? (
             <div className="hero-buttons">
               <Link to="/upload" className="primary-button">
@@ -38,9 +45,9 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* How It Works Section */}
       <section className="features-section">
         <h2>How It Works</h2>
-
         <div className="features-grid">
           <div className="feature-card">
             <div className="feature-icon">
@@ -76,6 +83,7 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Benefits Section */}
       <section className="benefits-section">
         <div className="benefits-content">
           <h2>Why Use AI Resume Analyzer?</h2>
@@ -110,9 +118,9 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Testimonials Section */}
       <section className="testimonials-section">
         <h2>What Our Users Say</h2>
-
         <div className="testimonials-grid">
           <div className="testimonial-card">
             <div className="testimonial-content">
@@ -173,6 +181,7 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Final CTA Section */}
       <section className="cta-section">
         <h2>Ready to Optimize Your Resume?</h2>
         <p>

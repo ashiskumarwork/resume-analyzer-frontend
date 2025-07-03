@@ -1,27 +1,48 @@
-/* Base Styles */
+/* ==========================================================================
+   AI Resume Analyzer - Global Styles
+   ========================================================================== */
+
+/* Google Fonts Import */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
+/* ==========================================================================
+   CSS Custom Properties (Variables)
+   ========================================================================== */
 :root {
+  /* Primary Colors */
   --primary-color: #4f46e5;
   --primary-hover: #4338ca;
+
+  /* Secondary Colors */
   --secondary-color: #10b981;
   --secondary-hover: #059669;
+
+  /* Text Colors */
   --text-color: #1f2937;
   --text-light: #6b7280;
+
+  /* Background Colors */
   --background-color: #ffffff;
   --background-light: #f9fafb;
+
+  /* Border and Utility Colors */
   --border-color: #e5e7eb;
   --error-color: #ef4444;
   --success-color: #10b981;
   --warning-color: #f59e0b;
+
+  /* Shadows */
   --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* ==========================================================================
+   Base Reset and Typography
+   ========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
@@ -31,12 +52,18 @@ body {
   line-height: 1.6;
 }
 
+/* ==========================================================================
+   Layout Components
+   ========================================================================== */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
+/* ==========================================================================
+   Typography
+   ========================================================================== */
 h1,
 h2,
 h3,
@@ -51,11 +78,9 @@ h6 {
 h1 {
   font-size: 2.25rem;
 }
-
 h2 {
   font-size: 1.875rem;
 }
-
 h3 {
   font-size: 1.5rem;
 }
@@ -64,6 +89,9 @@ p {
   margin-bottom: 1rem;
 }
 
+/* ==========================================================================
+   Links and Buttons
+   ========================================================================== */
 a {
   color: var(--primary-color);
   text-decoration: none;
@@ -79,7 +107,9 @@ button {
   font-family: "Poppins", sans-serif;
 }
 
-/* Loading Spinner */
+/* ==========================================================================
+   Loading Components
+   ========================================================================== */
 .loading-container {
   display: flex;
   justify-content: center;
@@ -102,7 +132,9 @@ button {
   }
 }
 
-/* Error Message */
+/* ==========================================================================
+   Message Components
+   ========================================================================== */
 .error-message {
   background-color: rgba(239, 68, 68, 0.1);
   color: var(--error-color);
@@ -113,7 +145,6 @@ button {
   border-left: 4px solid var(--error-color);
 }
 
-/* Success Message */
 .success-message {
   background-color: rgba(16, 185, 129, 0.1);
   color: var(--success-color);
@@ -124,16 +155,16 @@ button {
   border-left: 4px solid var(--success-color);
 }
 
-/* Responsive Styles */
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
 @media (max-width: 768px) {
   h1 {
     font-size: 1.875rem;
   }
-
   h2 {
     font-size: 1.5rem;
   }
-
   h3 {
     font-size: 1.25rem;
   }

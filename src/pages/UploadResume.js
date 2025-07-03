@@ -5,6 +5,10 @@ import { useNavigate } from "react-router-dom";
 import api from "../utils/api";
 import "../styles/UploadResume.css";
 
+/**
+ * Upload Resume Component
+ * Handles resume file upload with drag-and-drop functionality
+ */
 const UploadResume = () => {
   const [file, setFile] = useState(null);
   const [jobRole, setJobRole] = useState("");
@@ -13,6 +17,7 @@ const UploadResume = () => {
   const [dragActive, setDragActive] = useState(false);
   const navigate = useNavigate();
 
+  // Common job roles for autocomplete suggestions
   const commonJobRoles = [
     "Frontend Developer",
     "Backend Developer",
@@ -31,11 +36,19 @@ const UploadResume = () => {
     "Financial Analyst",
   ];
 
+  /**
+   * Handle file input change
+   * @param {Event} e - File input change event
+   */
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     validateAndSetFile(selectedFile);
   };
 
+  /**
+   * Validate file type and set file state
+   * @param {File} selectedFile - Selected file object
+   */
   const validateAndSetFile = (selectedFile) => {
     if (!selectedFile) return;
 
@@ -43,13 +56,14 @@ const UploadResume = () => {
     const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
 
     // Check if file is PDF or DOCX
-    if (
+    const isValidFile =
       fileType === "application/pdf" ||
       fileType ===
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
       fileExtension === "pdf" ||
-      fileExtension === "docx"
-    ) {
+      fileExtension === "docx";
+
+    if (isValidFile) {
       setFile(selectedFile);
       setError("");
     } else {
@@ -58,6 +72,10 @@ const UploadResume = () => {
     }
   };
 
+  /**
+   * Handle drag events for drag-and-drop functionality
+   * @param {Event} e - Drag event
+   */
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -69,6 +87,10 @@ const UploadResume = () => {
     }
   };
 
+  /**
+   * Handle file drop
+   * @param {Event} e - Drop event
+   */
   const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -79,9 +101,14 @@ const UploadResume = () => {
     }
   };
 
+  /**
+   * Handle form submission
+   * @param {Event} e - Form submit event
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validation
     if (!file) {
       setError("Please select a resume file");
       return;
@@ -95,6 +122,7 @@ const UploadResume = () => {
     setLoading(true);
     setError("");
 
+    // Create form data for file upload
     const formData = new FormData();
     formData.append("resume", file);
     formData.append("jobRole", jobRole);
@@ -106,17 +134,10 @@ const UploadResume = () => {
         },
       });
 
-      // Instead of redirecting, navigate to the details page of the newly uploaded resume
-      // The backend should return the ID of the newly created resume analysis
       if (response.data && response.data.success) {
-        // Get the latest resume from history
+        // Get the latest resume and navigate to its details
         const historyResponse = await api.get("/resume/history");
-        if (
-          historyResponse.data &&
-          historyResponse.data.history &&
-          historyResponse.data.history.length > 0
-        ) {
-          // Navigate to the most recent resume (which should be the one we just uploaded)
+        if (historyResponse.data?.history?.length > 0) {
           const latestResumeId = historyResponse.data.history[0]._id;
           navigate(`/resume/${latestResumeId}`);
         } else {
@@ -126,7 +147,6 @@ const UploadResume = () => {
         navigate("/history");
       }
     } catch (err) {
-      console.error(err);
       setError(err.response?.data?.error || "Failed to upload resume");
     } finally {
       setLoading(false);
@@ -141,9 +161,11 @@ const UploadResume = () => {
         score
       </p>
 
+      {/* Error message */}
       {error && <div className="error-message">{error}</div>}
 
       <form onSubmit={handleSubmit}>
+        {/* File Drop Area */}
         <div
           className={`file-drop-area ${dragActive ? "drag-active" : ""} ${
             file ? "has-file" : ""
@@ -162,6 +184,7 @@ const UploadResume = () => {
           />
 
           {file ? (
+            // File selected display
             <div className="file-info">
               <i className="fas fa-file-alt file-icon"></i>
               <span className="file-name">{file.name}</span>
@@ -174,6 +197,7 @@ const UploadResume = () => {
               </button>
             </div>
           ) : (
+            // Drop zone display
             <div className="drop-message">
               <i className="fas fa-cloud-upload-alt upload-icon"></i>
               <p>Drag & drop your resume here or</p>
@@ -185,6 +209,7 @@ const UploadResume = () => {
           )}
         </div>
 
+        {/* Job Role Input */}
         <div className="form-group">
           <label htmlFor="jobRole">Target Job Role</label>
           <div className="job-role-input-container">
@@ -205,6 +230,7 @@ const UploadResume = () => {
           </div>
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
           className="upload-button"
