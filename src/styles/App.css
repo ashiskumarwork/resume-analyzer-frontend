@@ -1,39 +1,44 @@
 /* ==========================================================================
-   AI Resume Analyzer - Global Styles
+   AI Resume Analyzer - Global Styles (Student-Friendly Version)
    ========================================================================== */
 
-/* Google Fonts Import */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+/* Google Fonts Import - More casual and friendly fonts */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Comic+Neue:wght@300;400;700&display=swap");
 
 /* ==========================================================================
-   CSS Custom Properties (Variables)
+   CSS Custom Properties (Variables) - Student-Friendly Colors
    ========================================================================== */
 :root {
-  /* Primary Colors */
-  --primary-color: #4f46e5;
-  --primary-hover: #4338ca;
+  /* Primary Colors - More playful and friendly */
+  --primary-color: #6366f1;
+  --primary-hover: #4f46e5;
 
-  /* Secondary Colors */
-  --secondary-color: #10b981;
-  --secondary-hover: #059669;
+  /* Secondary Colors - Bright and energetic */
+  --secondary-color: #f59e0b;
+  --secondary-hover: #d97706;
 
-  /* Text Colors */
-  --text-color: #1f2937;
+  /* Accent Colors - Fun and vibrant */
+  --accent-color: #ec4899;
+  --accent-hover: #db2777;
+
+  /* Text Colors - Softer and more readable */
+  --text-color: #374151;
   --text-light: #6b7280;
 
-  /* Background Colors */
+  /* Background Colors - Warmer and more inviting */
   --background-color: #ffffff;
-  --background-light: #f9fafb;
+  --background-light: #fef7ff;
+  --background-warm: #fef3c7;
 
-  /* Border and Utility Colors */
+  /* Border and Utility Colors - Softer edges */
   --border-color: #e5e7eb;
   --error-color: #ef4444;
   --success-color: #10b981;
   --warning-color: #f59e0b;
 
-  /* Shadows */
-  --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  /* Shadows - Softer and more friendly */
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --box-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 /* ==========================================================================
@@ -46,7 +51,7 @@
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: "Inter", sans-serif;
   color: var(--text-color);
   background-color: var(--background-light);
   line-height: 1.6;
@@ -62,7 +67,7 @@ body {
 }
 
 /* ==========================================================================
-   Typography
+   Typography - More casual and friendly
    ========================================================================== */
 h1,
 h2,
@@ -73,57 +78,78 @@ h6 {
   font-weight: 600;
   line-height: 1.3;
   margin-bottom: 1rem;
+  font-family: "Comic Neue", cursive;
 }
 
 h1 {
   font-size: 2.25rem;
+  color: var(--primary-color);
 }
+
 h2 {
   font-size: 1.875rem;
+  color: var(--text-color);
 }
+
 h3 {
   font-size: 1.5rem;
+  color: var(--text-color);
 }
 
 p {
   margin-bottom: 1rem;
+  font-family: "Inter", sans-serif;
 }
 
 /* ==========================================================================
-   Links and Buttons
+   Links and Buttons - More playful styling
    ========================================================================== */
 a {
   color: var(--primary-color);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  border-radius: 8px;
 }
 
 a:hover {
   color: var(--primary-hover);
+  transform: translateY(-1px);
 }
 
 button {
   cursor: pointer;
-  font-family: "Poppins", sans-serif;
+  font-family: "Inter", sans-serif;
+  border-radius: 12px;
+  transition: all 0.3s ease;
 }
 
 /* ==========================================================================
-   Loading Components
+   Loading Components - More fun loading animation
    ========================================================================== */
 .loading-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 300px;
+  flex-direction: column;
 }
 
 .loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid rgba(0, 0, 0, 0.1);
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(99, 102, 241, 0.1);
   border-radius: 50%;
   border-top-color: var(--primary-color);
   animation: spin 1s ease-in-out infinite;
+  margin-bottom: 1rem;
+}
+
+.loading-container::after {
+  content: "Loading... ✨";
+  font-family: "Comic Neue", cursive;
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  margin-top: 1rem;
 }
 
 @keyframes spin {
@@ -133,26 +159,47 @@ button {
 }
 
 /* ==========================================================================
-   Message Components
+   Message Components - More friendly styling
    ========================================================================== */
 .error-message {
-  background-color: rgba(239, 68, 68, 0.1);
+  background-color: rgba(239, 68, 68, 0.08);
   color: var(--error-color);
-  padding: 12px 16px;
-  border-radius: 6px;
+  padding: 16px 20px;
+  border-radius: 12px;
   margin-bottom: 20px;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   border-left: 4px solid var(--error-color);
+  font-family: "Inter", sans-serif;
 }
 
 .success-message {
-  background-color: rgba(16, 185, 129, 0.1);
+  background-color: rgba(16, 185, 129, 0.08);
   color: var(--success-color);
-  padding: 12px 16px;
-  border-radius: 6px;
+  padding: 16px 20px;
+  border-radius: 12px;
   margin-bottom: 20px;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   border-left: 4px solid var(--success-color);
+  font-family: "Inter", sans-serif;
+}
+
+/* ==========================================================================
+   Fun decorative elements
+   ========================================================================== */
+.fun-emoji {
+  font-size: 1.2em;
+  margin: 0 0.2em;
+}
+
+.student-note {
+  background: linear-gradient(135deg, var(--background-warm), #fef7ff);
+  border: 2px dashed var(--accent-color);
+  border-radius: 16px;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-family: "Comic Neue", cursive;
+  font-size: 0.95rem;
+  color: var(--text-color);
 }
 
 /* ==========================================================================

@@ -5,10 +5,6 @@ import { useNavigate } from "react-router-dom";
 import api from "../utils/api";
 import "../styles/UploadResume.css";
 
-/**
- * Upload Resume Component
- * Handles resume file upload with drag-and-drop functionality
- */
 const UploadResume = () => {
   const [file, setFile] = useState(null);
   const [jobRole, setJobRole] = useState("");
@@ -17,7 +13,6 @@ const UploadResume = () => {
   const [dragActive, setDragActive] = useState(false);
   const navigate = useNavigate();
 
-  // Common job roles for autocomplete suggestions
   const commonJobRoles = [
     "Frontend Developer",
     "Backend Developer",
@@ -36,26 +31,11 @@ const UploadResume = () => {
     "Financial Analyst",
   ];
 
-  /**
-   * Handle file input change
-   * @param {Event} e - File input change event
-   */
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    validateAndSetFile(selectedFile);
-  };
-
-  /**
-   * Validate file type and set file state
-   * @param {File} selectedFile - Selected file object
-   */
   const validateAndSetFile = (selectedFile) => {
     if (!selectedFile) return;
 
     const fileType = selectedFile.type;
     const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
-
-    // Check if file is PDF or DOCX
     const isValidFile =
       fileType === "application/pdf" ||
       fileType ===
@@ -72,177 +52,169 @@ const UploadResume = () => {
     }
   };
 
-  /**
-   * Handle drag events for drag-and-drop functionality
-   * @param {Event} e - Drag event
-   */
+  const handleFileChange = (e) => validateAndSetFile(e.target.files[0]);
+
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
-
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
+    setDragActive(e.type === "dragenter" || e.type === "dragover");
   };
 
-  /**
-   * Handle file drop
-   * @param {Event} e - Drop event
-   */
   const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      validateAndSetFile(e.dataTransfer.files[0]);
-    }
+    if (e.dataTransfer.files?.[0]) validateAndSetFile(e.dataTransfer.files[0]);
   };
 
-  /**
-   * Handle form submission
-   * @param {Event} e - Form submit event
-   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation
-    if (!file) {
-      setError("Please select a resume file");
-      return;
-    }
-
-    if (!jobRole) {
-      setError("Please select or enter a job role");
+    if (!file || !jobRole) {
+      setError(
+        !file
+          ? "Please select a resume file"
+          : "Please select or enter a job role"
+      );
       return;
     }
 
     setLoading(true);
     setError("");
 
-    // Create form data for file upload
     const formData = new FormData();
     formData.append("resume", file);
     formData.append("jobRole", jobRole);
 
     try {
       const response = await api.post("/resume/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        headers: { "Content-Type": "multipart/form-data" },
       });
 
-      if (response.data && response.data.success) {
-        // Get the latest resume and navigate to its details
+      if (response.data?.success) {
         const historyResponse = await api.get("/resume/history");
-        if (historyResponse.data?.history?.length > 0) {
-          const latestResumeId = historyResponse.data.history[0]._id;
-          navigate(`/resume/${latestResumeId}`);
-        } else {
-          navigate("/history");
-        }
+        const latestResumeId = historyResponse.data?.history?.[0]?._id;
+        navigate(latestResumeId ? `/resume/${latestResumeId}` : "/history");
       } else {
         navigate("/history");
       }
     } catch (err) {
-      setError(err.response?.data?.error || "Failed to upload resume");
+      setError(
+        err.response?.data?.message || "Upload failed. Please try again."
+      );
     } finally {
       setLoading(false);
     }
   };
 
+  const removeFile = () => {
+    setFile(null);
+    setError("");
+  };
+
+  const formatFileSize = (bytes) => {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const sizes = ["Bytes", "KB", "MB", "GB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+  };
+
   return (
     <div className="upload-container">
-      <h1>Upload Your Resume</h1>
-      <p className="upload-subtitle">
-        Upload your resume to get AI-powered feedback and ATS compatibility
-        score
-      </p>
+      <div className="upload-header">
+        <h1>📤 Upload Your Resume</h1>
+        <p className="upload-subtitle">
+          Get instant AI-powered feedback on your resume! 🚀
+        </p>
+      </div>
 
-      {/* Error message */}
-      {error && <div className="error-message">{error}</div>}
-
-      <form onSubmit={handleSubmit}>
-        {/* File Drop Area */}
-        <div
-          className={`file-drop-area ${dragActive ? "drag-active" : ""} ${
-            file ? "has-file" : ""
-          }`}
-          onDragEnter={handleDrag}
-          onDragOver={handleDrag}
-          onDragLeave={handleDrag}
-          onDrop={handleDrop}
-        >
-          <input
-            type="file"
-            id="resume"
-            className="file-input"
-            onChange={handleFileChange}
-            accept=".pdf,.docx"
-          />
-
-          {file ? (
-            // File selected display
-            <div className="file-info">
-              <i className="fas fa-file-alt file-icon"></i>
-              <span className="file-name">{file.name}</span>
-              <button
-                type="button"
-                className="remove-file-btn"
-                onClick={() => setFile(null)}
-              >
-                Remove
-              </button>
-            </div>
-          ) : (
-            // Drop zone display
+      <form onSubmit={handleSubmit} className="upload-form">
+        <div className="form-section">
+          <h3>📄 Step 1: Upload Your Resume</h3>
+          <div
+            className={`file-drop-area ${dragActive ? "drag-active" : ""} ${
+              file ? "has-file" : ""
+            }`}
+            onDragEnter={handleDrag}
+            onDragLeave={handleDrag}
+            onDragOver={handleDrag}
+            onDrop={handleDrop}
+          >
+            <input
+              type="file"
+              onChange={handleFileChange}
+              accept=".pdf,.docx"
+              className="file-input"
+              id="file-input"
+            />
             <div className="drop-message">
-              <i className="fas fa-cloud-upload-alt upload-icon"></i>
-              <p>Drag & drop your resume here or</p>
-              <label htmlFor="resume" className="select-file-btn">
-                Browse Files
-              </label>
-              <p className="file-format-hint">Supported formats: PDF, DOCX</p>
+              <div className="upload-icon">📄</div>
+              <h4>Drop your resume here or click to browse</h4>
+              <p>Supports PDF and DOCX files up to 10MB</p>
             </div>
-          )}
+            <label htmlFor="file-input" className="select-file-btn">
+              📁 Choose File
+            </label>
+          </div>
+          <p className="file-format-hint">
+            💡 Tip: Make sure your resume is clear and well-formatted for better
+            analysis
+          </p>
         </div>
 
-        {/* Job Role Input */}
-        <div className="form-group">
-          <label htmlFor="jobRole">Target Job Role</label>
-          <div className="job-role-input-container">
-            <input
-              type="text"
-              id="jobRole"
-              value={jobRole}
-              onChange={(e) => setJobRole(e.target.value)}
-              placeholder="Enter the job role you're applying for"
-              list="jobRolesList"
-              required
-            />
-            <datalist id="jobRolesList">
-              {commonJobRoles.map((role, index) => (
-                <option key={index} value={role} />
-              ))}
-            </datalist>
+        {file && (
+          <div className="file-info">
+            <div className="file-icon">📄</div>
+            <div className="file-details">
+              <div className="file-name">{file.name}</div>
+              <div className="file-size">{formatFileSize(file.size)}</div>
+            </div>
+            <button
+              type="button"
+              onClick={removeFile}
+              className="remove-file-btn"
+            >
+              ❌
+            </button>
+          </div>
+        )}
+
+        <div className="form-section">
+          <h3>🎯 Step 2: Select Job Role</h3>
+          <div className="form-group">
+            <label htmlFor="job-role">Job Role:</label>
+            <div className="job-role-input-container">
+              <input
+                type="text"
+                id="job-role"
+                value={jobRole}
+                onChange={(e) => setJobRole(e.target.value)}
+                placeholder="e.g., Frontend Developer, Data Scientist..."
+                className="job-role-input"
+                list="common-roles"
+              />
+              <datalist id="common-roles">
+                {commonJobRoles.map((role) => (
+                  <option key={role} value={role} />
+                ))}
+              </datalist>
+            </div>
+            <p className="input-hint">
+              💡 Select from common roles or type your own
+            </p>
           </div>
         </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="upload-button"
-          disabled={loading || !file || !jobRole}
-        >
+        {error && <div className="error-message">{error}</div>}
+
+        <button type="submit" disabled={loading} className="upload-button">
           {loading ? (
             <>
-              <div className="button-spinner"></div>
-              Analyzing Resume...
+              <div className="button-spinner"></div>⏳ Analyzing Resume...
             </>
           ) : (
-            "Analyze Resume"
+            "🚀 Analyze My Resume"
           )}
         </button>
       </form>

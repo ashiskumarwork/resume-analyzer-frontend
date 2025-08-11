@@ -5,200 +5,153 @@ import { Link } from "react-router-dom";
 import api from "../utils/api";
 import "../styles/Dashboard.css";
 
-/**
- * Dashboard Component
- * Displays user statistics and recent resume uploads
- */
 const Dashboard = () => {
-  const [stats, setStats] = useState({
-    totalResumes: 0,
-    averageScore: 0,
-    recentUploads: [],
-  });
+  const [stats, setStats] = useState({ totalResumes: 0, averageScore: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Fetch dashboard data on component mount
   useEffect(() => {
-    fetchDashboardData();
+    const fetchData = async () => {
+      try {
+        const response = await api.get("/resume/history");
+        const history = response.data.history;
+        const validScores = history
+          .filter((item) => item.atsScore != null)
+          .map((item) => item.atsScore);
+
+        setStats({
+          totalResumes: history.length,
+          averageScore:
+            validScores.length > 0
+              ? (
+                  validScores.reduce((sum, score) => sum + score, 0) /
+                  validScores.length
+                ).toFixed(1)
+              : "N/A",
+        });
+      } catch (err) {
+        setError("Oops! Something went wrong while loading your dashboard 😅");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
   }, []);
 
-  /**
-   * Fetch dashboard statistics and recent uploads
-   */
-  const fetchDashboardData = async () => {
-    try {
-      const response = await api.get("/resume/history");
-      const history = response.data.history;
-
-      // Calculate statistics from resume history
-      const totalResumes = history.length;
-
-      // Calculate average ATS score (excluding null scores)
-      const validScores = history
-        .filter((item) => item.atsScore !== null && item.atsScore !== undefined)
-        .map((item) => item.atsScore);
-
-      const averageScore =
-        validScores.length > 0
-          ? (
-              validScores.reduce((sum, score) => sum + score, 0) /
-              validScores.length
-            ).toFixed(1)
-          : "N/A";
-
-      // Get most recent uploads (limit to 3)
-      const recentUploads = history.slice(0, 3);
-
-      setStats({
-        totalResumes,
-        averageScore,
-        recentUploads,
-      });
-    } catch (err) {
-      setError("Failed to load dashboard data");
-    } finally {
-      setLoading(false);
-    }
+  const getScoreMessage = (score) => {
+    if (score === "N/A") return "Upload your first resume to get started! 🚀";
+    const numScore = parseFloat(score);
+    if (numScore >= 8) return "Excellent! You're crushing it! 🎉";
+    if (numScore >= 7) return "Great job! Your resumes are looking good! 👍";
+    if (numScore >= 5) return "Good progress! Keep improving! 💪";
+    return "Keep working on it! Every improvement counts! 🔥";
   };
 
-  /**
-   * Render loading skeleton
-   */
-  const renderLoadingSkeleton = () => (
-    <>
-      <div className="stat-card skeleton">
-        <div className="skeleton-text" role="heading" aria-level="3"></div>
-        <p className="stat-value skeleton-text"></p>
-      </div>
-      <div className="stat-card skeleton">
-        <div className="skeleton-text" role="heading" aria-level="3"></div>
-        <p className="stat-value skeleton-text"></p>
-      </div>
-      <div className="stat-card action-card skeleton">
-        <div className="skeleton-text" role="heading" aria-level="3"></div>
-        <div className="skeleton-button"></div>
-      </div>
-    </>
-  );
-
-  /**
-   * Render statistics cards
-   */
-  const renderStatsCards = () => (
-    <>
-      <div className="stat-card">
-        <h3>Total Resumes</h3>
-        <p className="stat-value">{stats.totalResumes}</p>
-      </div>
-
-      <div className="stat-card">
-        <h3>Average ATS Score</h3>
-        <p className="stat-value">{stats.averageScore}</p>
-      </div>
-
-      <div className="stat-card action-card">
-        <h3>Analyze Resume</h3>
-        <Link to="/upload" className="dashboard-button">
-          Upload New Resume
-        </Link>
-      </div>
-    </>
-  );
-
-  /**
-   * Render recent uploads section
-   */
-  const renderRecentUploads = () => {
-    if (loading) {
-      return (
-        <div className="recent-uploads">
+  if (loading) {
+    return (
+      <div className="dashboard-container">
+        <div className="dashboard-header">
+          <h1>📊 Your Dashboard</h1>
+          <p>Welcome back! Here's your resume analysis overview</p>
+        </div>
+        <div className="stats-grid">
           {[1, 2, 3].map((item) => (
-            <div className="resume-card skeleton" key={item}>
-              <div className="resume-info">
-                <div
-                  className="skeleton-text"
-                  role="heading"
-                  aria-level="3"
-                ></div>
-                <p className="skeleton-text"></p>
-                <p className="skeleton-text"></p>
-              </div>
-              <div className="resume-score">
-                <div className="score-circle skeleton"></div>
-                <p className="skeleton-text"></p>
-              </div>
-              <div className="skeleton-button"></div>
+            <div key={item} className="stat-card skeleton">
+              <div className="skeleton-text"></div>
+              <p className="stat-value skeleton-text"></p>
             </div>
           ))}
         </div>
-      );
-    }
-
-    if (stats.recentUploads.length === 0) {
-      return (
-        <div className="no-data">
-          <p>
-            No resume uploads yet. Get started by uploading your first resume!
-          </p>
-          <Link to="/upload" className="dashboard-button">
-            Upload Resume
-          </Link>
-        </div>
-      );
-    }
-
-    return (
-      <div className="recent-uploads">
-        {stats.recentUploads.map((resume) => (
-          <div className="resume-card" key={resume._id}>
-            <div className="resume-info">
-              <h3>{resume.fileName}</h3>
-              <p>Job Role: {resume.jobRole}</p>
-              <p>Date: {new Date(resume.createdAt).toLocaleDateString()}</p>
-            </div>
-            <div className="resume-score">
-              <div className="score-circle">
-                <span>
-                  {resume.atsScore !== null && resume.atsScore !== undefined
-                    ? resume.atsScore
-                    : "N/A"}
-                </span>
-              </div>
-              <p>ATS Score</p>
-            </div>
-            <Link to={`/resume/${resume._id}`} className="view-details-button">
-              View Details
-            </Link>
-          </div>
-        ))}
       </div>
     );
-  };
+  }
 
   return (
     <div className="dashboard-container">
-      <h1>Dashboard</h1>
+      <div className="dashboard-header">
+        <h1>📊 Your Dashboard</h1>
+        <p>Welcome back! Here's your resume analysis overview</p>
+      </div>
 
-      {/* Error message */}
       {error && <div className="error-message">{error}</div>}
 
-      {/* Statistics Cards */}
-      <div className="stats-container">
-        {loading ? renderLoadingSkeleton() : renderStatsCards()}
-      </div>
-
-      {/* Recent Activity Section */}
-      <div className="recent-activity">
-        <div className="section-header">
-          <h2>Recent Activity</h2>
-          <Link to="/history" className="view-all-link">
-            View All
-          </Link>
+      <div className="stats-grid">
+        <div className="stat-card">
+          <div className="stat-icon">📄</div>
+          <h3>Total Resumes</h3>
+          <p className="stat-value">{stats.totalResumes}</p>
+          <p className="stat-description">
+            You've uploaded {stats.totalResumes} resume
+            {stats.totalResumes !== 1 ? "s" : ""} so far!
+          </p>
         </div>
 
-        {renderRecentUploads()}
+        <div className="stat-card">
+          <div className="stat-icon">📊</div>
+          <h3>Average ATS Score</h3>
+          <p className="stat-value">{stats.averageScore}</p>
+          <p className="stat-description">
+            {getScoreMessage(stats.averageScore)}
+          </p>
+        </div>
+
+        <div className="stat-card action-card">
+          <div className="stat-icon">🚀</div>
+          <h3>Ready to Improve?</h3>
+          <p className="stat-description">
+            Upload a new resume and get instant AI feedback!
+          </p>
+          <Link to="/upload" className="upload-btn">
+            📤 Upload New Resume
+          </Link>
+        </div>
       </div>
+
+      {stats.totalResumes > 0 ? (
+        <div className="dashboard-actions">
+          <div className="action-section">
+            <h3>📚 Manage Your Resumes</h3>
+            <p>View and analyze all your uploaded resumes</p>
+            <Link to="/history" className="action-btn primary">
+              👁️ View All Resumes
+            </Link>
+          </div>
+          <div className="action-section">
+            <h3>📈 Improve Your Score</h3>
+            <p>Upload a new resume to get better feedback</p>
+            <Link to="/upload" className="action-btn secondary">
+              📤 Upload New Resume
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <div className="welcome-section">
+          <div className="welcome-content">
+            <h2>🎉 Welcome to AI Resume Analyzer!</h2>
+            <p>
+              Get started by uploading your first resume and see how AI can help
+              improve your job applications.
+            </p>
+            <div className="welcome-features">
+              <div className="feature">
+                <span className="feature-icon">🤖</span>
+                <span>AI-Powered Analysis</span>
+              </div>
+              <div className="feature">
+                <span className="feature-icon">📊</span>
+                <span>ATS Compatibility Score</span>
+              </div>
+              <div className="feature">
+                <span className="feature-icon">💡</span>
+                <span>Detailed Feedback</span>
+              </div>
+            </div>
+            <Link to="/upload" className="welcome-btn">
+              🚀 Start Your Journey
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

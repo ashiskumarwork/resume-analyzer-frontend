@@ -43,12 +43,12 @@ const Navbar = () => {
       <div className="navbar-container">
         {/* Logo/Brand */}
         <Link to="/" className="navbar-logo">
-          <span className="logo-text">AI Resume Analyzer</span>
+          <span className="logo-text">🎓 AI Resume Analyzer</span>
         </Link>
 
         {/* Mobile menu toggle button */}
         <div className="menu-icon" onClick={toggleMenu}>
-          <i className={menuOpen ? "fas fa-times" : "fas fa-bars"}></i>
+          <span className={menuOpen ? "fas fa-times" : "fas fa-bars"}></span>
         </div>
 
         {/* Navigation menu */}
@@ -58,22 +58,22 @@ const Navbar = () => {
             <>
               <li className="nav-item">
                 <Link to="/dashboard" className="nav-link" onClick={closeMenu}>
-                  Dashboard
+                  📊 Dashboard
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to="/upload" className="nav-link" onClick={closeMenu}>
-                  Upload Resume
+                  📄 Upload Resume
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to="/history" className="nav-link" onClick={closeMenu}>
-                  History
+                  📚 History
                 </Link>
               </li>
               <li className="nav-item">
                 <button className="logout-btn" onClick={handleLogout}>
-                  Logout
+                  👋 Logout
                 </button>
               </li>
             </>
@@ -82,7 +82,7 @@ const Navbar = () => {
             <>
               <li className="nav-item">
                 <Link to="/login" className="nav-link" onClick={closeMenu}>
-                  Login
+                  🔑 Login
                 </Link>
               </li>
               <li className="nav-item">
@@ -91,7 +91,7 @@ const Navbar = () => {
                   className="nav-link register-link"
                   onClick={closeMenu}
                 >
-                  Register
+                  🎉 Register
                 </Link>
               </li>
             </>

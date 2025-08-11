@@ -5,10 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Auth.css";
 
-/**
- * Login Page Component
- * Handles user authentication with email and password
- */
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -19,10 +15,6 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  /**
-   * Handle form input changes
-   * @param {Event} e - Input change event
-   */
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -30,10 +22,6 @@ const Login = () => {
     });
   };
 
-  /**
-   * Handle form submission
-   * @param {Event} e - Form submit event
-   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -58,17 +46,18 @@ const Login = () => {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2>Login to Your Account</h2>
-        <p className="auth-subtitle">
-          Welcome back! Please enter your credentials
-        </p>
+        <div className="auth-header">
+          <h2>🔑 Welcome Back!</h2>
+          <p className="auth-subtitle">
+            Ready to analyze your resume? Let's get you logged in! ✨
+          </p>
+        </div>
 
-        {/* Error message display */}
         {error && <div className="error-message">{error}</div>}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">📧 Email Address</label>
             <input
               type="email"
               id="email"
@@ -76,12 +65,13 @@ const Login = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              placeholder="Enter your email"
+              placeholder="your.email@example.com"
+              className="auth-input"
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">🔒 Password</label>
             <input
               type="password"
               id="password"
@@ -90,17 +80,30 @@ const Login = () => {
               onChange={handleChange}
               required
               placeholder="Enter your password"
+              className="auth-input"
             />
           </div>
 
           <button type="submit" className="auth-button" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
+            {loading ? (
+              <>
+                <div className="button-spinner"></div>
+                🚀 Logging you in...
+              </>
+            ) : (
+              "🎉 Login to Dashboard"
+            )}
           </button>
         </form>
 
-        <p className="auth-redirect">
-          Don't have an account? <Link to="/register">Register</Link>
-        </p>
+        <div className="auth-footer">
+          <p>
+            Don't have an account?{" "}
+            <Link to="/register" className="auth-link">
+              🎓 Sign up here
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

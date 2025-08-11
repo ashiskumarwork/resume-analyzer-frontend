@@ -5,10 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Auth.css";
 
-/**
- * Registration Page Component
- * Handles new user account creation
- */
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -21,10 +17,6 @@ const Register = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
 
-  /**
-   * Handle form input changes
-   * @param {Event} e - Input change event
-   */
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -32,15 +24,10 @@ const Register = () => {
     });
   };
 
-  /**
-   * Handle form submission with validation
-   * @param {Event} e - Form submit event
-   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    // Client-side validation
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       return;
@@ -72,15 +59,18 @@ const Register = () => {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2>Create an Account</h2>
-        <p className="auth-subtitle">Join us to analyze your resume with AI</p>
+        <div className="auth-header">
+          <h2>🎓 Join the Fun!</h2>
+          <p className="auth-subtitle">
+            Create your account and start analyzing resumes with AI! 🚀
+          </p>
+        </div>
 
-        {/* Error message display */}
         {error && <div className="error-message">{error}</div>}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="name">Full Name</label>
+            <label htmlFor="name">👤 Full Name</label>
             <input
               type="text"
               id="name"
@@ -88,12 +78,13 @@ const Register = () => {
               value={formData.name}
               onChange={handleChange}
               required
-              placeholder="Enter your full name"
+              placeholder="Your awesome name"
+              className="auth-input"
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">📧 Email Address</label>
             <input
               type="email"
               id="email"
@@ -101,12 +92,13 @@ const Register = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              placeholder="Enter your email"
+              placeholder="your.email@example.com"
+              className="auth-input"
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">🔒 Password</label>
             <input
               type="password"
               id="password"
@@ -114,12 +106,14 @@ const Register = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              placeholder="Create a password"
+              placeholder="Create a strong password"
+              className="auth-input"
             />
+            <p className="input-hint">💡 At least 6 characters</p>
           </div>
 
           <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password</label>
+            <label htmlFor="confirmPassword">✅ Confirm Password</label>
             <input
               type="password"
               id="confirmPassword"
@@ -127,18 +121,31 @@ const Register = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
-              placeholder="Confirm your password"
+              placeholder="Type your password again"
+              className="auth-input"
             />
           </div>
 
           <button type="submit" className="auth-button" disabled={loading}>
-            {loading ? "Creating Account..." : "Register"}
+            {loading ? (
+              <>
+                <div className="button-spinner"></div>
+                🚀 Creating your account...
+              </>
+            ) : (
+              "🎉 Create Account"
+            )}
           </button>
         </form>
 
-        <p className="auth-redirect">
-          Already have an account? <Link to="/login">Login</Link>
-        </p>
+        <div className="auth-footer">
+          <p>
+            Already have an account?{" "}
+            <Link to="/login" className="auth-link">
+              🔑 Login here
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

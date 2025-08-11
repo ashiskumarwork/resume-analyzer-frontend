@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Upload Resume Page Styles
+   Upload Resume Page Styles - Student-Friendly Version
    ========================================================================== */
 
 .upload-container {
@@ -8,34 +8,89 @@
   padding: 2rem 0;
 }
 
-.upload-container h1 {
+/* Header */
+.upload-header {
   text-align: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, var(--background-warm), #fef7ff);
+  border-radius: 20px;
+  box-shadow: var(--box-shadow);
+  border: 2px solid rgba(99, 102, 241, 0.1);
+}
+
+.upload-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  font-family: "Comic Neue", cursive;
+  font-weight: 700;
 }
 
 .upload-subtitle {
-  text-align: center;
-  color: var(--text-light);
+  font-size: 1.1rem;
+  color: var(--text-color);
+  font-family: "Inter", sans-serif;
+  line-height: 1.6;
+}
+
+/* Form */
+.upload-form {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: var(--box-shadow);
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.upload-form:hover {
+  box-shadow: var(--box-shadow-hover);
+  border-color: var(--primary-color);
+}
+
+.form-section {
   margin-bottom: 2rem;
 }
 
-/* ==========================================================================
-   File Drop Area
-   ========================================================================== */
+.form-section h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  font-family: "Comic Neue", cursive;
+  font-weight: 600;
+}
+
+/* File Drop Area */
 .file-drop-area {
-  border: 2px dashed var(--border-color);
-  border-radius: 10px;
-  padding: 2.5rem;
+  border: 3px dashed var(--border-color);
+  border-radius: 16px;
+  padding: 3rem 2rem;
   text-align: center;
-  margin-bottom: 1.5rem;
-  background-color: var(--background-color);
-  transition: border-color 0.3s ease;
+  background: var(--background-light);
+  transition: all 0.3s ease;
   position: relative;
+  cursor: pointer;
+}
+
+.file-drop-area:hover {
+  border-color: var(--primary-color);
+  background: rgba(99, 102, 241, 0.05);
 }
 
 .file-drop-area.drag-active {
   border-color: var(--primary-color);
-  background-color: rgba(79, 70, 229, 0.05);
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.1),
+    rgba(236, 72, 153, 0.1)
+  );
+  transform: scale(1.02);
+}
+
+.file-drop-area.has-file {
+  border-color: var(--success-color);
+  background: rgba(16, 185, 129, 0.05);
 }
 
 .file-input {
@@ -52,153 +107,269 @@
   pointer-events: none;
 }
 
-/* ==========================================================================
-   Upload Icons and Messages
-   ========================================================================== */
+.drop-message h4 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+  font-family: "Comic Neue", cursive;
+  font-weight: 600;
+}
+
+.drop-message p {
+  font-size: 1rem;
+  color: var(--text-light);
+  font-family: "Inter", sans-serif;
+}
+
 .upload-icon {
   font-size: 3rem;
-  color: var(--primary-color);
   margin-bottom: 1rem;
+  color: var(--primary-color);
 }
 
 .select-file-btn {
   display: inline-block;
-  background-color: var(--primary-color);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
   color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  margin: 0.5rem 0;
-  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-family: "Inter", sans-serif;
+  border: none;
   cursor: pointer;
+  margin-top: 1rem;
+}
+
+.select-file-btn:hover {
+  background: linear-gradient(
+    135deg,
+    var(--primary-hover),
+    var(--accent-hover)
+  );
+  transform: translateY(-2px);
+  box-shadow: var(--box-shadow);
 }
 
 .file-format-hint {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: var(--text-light);
-  margin-top: 0.5rem;
+  margin-top: 1rem;
+  font-family: "Inter", sans-serif;
 }
 
-/* ==========================================================================
-   Selected File Display
-   ========================================================================== */
+/* File Info */
 .file-info {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  background: var(--background-light);
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: var(--box-shadow);
+  border: 2px solid rgba(99, 102, 241, 0.1);
+  margin-top: 1rem;
 }
 
 .file-icon {
   font-size: 2rem;
   color: var(--primary-color);
-  margin-right: 1rem;
+}
+
+.file-details {
+  flex: 1;
+  margin-left: 1rem;
 }
 
 .file-name {
-  font-weight: 500;
-  margin-right: 1rem;
-  word-break: break-all;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  font-family: "Inter", sans-serif;
+  margin-bottom: 0.25rem;
+}
+
+.file-size {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-family: "Inter", sans-serif;
 }
 
 .remove-file-btn {
-  background-color: rgba(239, 68, 68, 0.1);
+  background: rgba(239, 68, 68, 0.1);
   color: var(--error-color);
+  padding: 0.5rem;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
   border: none;
-  padding: 0.25rem 0.75rem;
-  border-radius: 4px;
-  font-size: 0.875rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .remove-file-btn:hover {
-  background-color: rgba(239, 68, 68, 0.2);
+  background: var(--error-color);
+  color: white;
+  transform: scale(1.1);
 }
 
-/* ==========================================================================
-   Job Role Input
-   ========================================================================== */
-.job-role-input-container {
-  position: relative;
+/* Form Groups */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+  font-family: "Inter", sans-serif;
 }
 
 .job-role-input-container input {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
   font-size: 1rem;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
+  font-family: "Inter", sans-serif;
+  background: white;
 }
 
 .job-role-input-container input:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  transform: translateY(-1px);
 }
 
-/* ==========================================================================
-   Submit Button
-   ========================================================================== */
+.job-role-input-container input::placeholder {
+  color: var(--text-light);
+  font-family: "Inter", sans-serif;
+}
+
+.input-hint {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-top: 0.5rem;
+  font-family: "Inter", sans-serif;
+  font-style: italic;
+}
+
+/* Upload Button */
 .upload-button {
-  display: block;
   width: 100%;
-  background-color: var(--primary-color);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
   color: white;
+  padding: 1rem 2rem;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-family: "Inter", sans-serif;
   border: none;
-  padding: 0.75rem 1rem;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 1.5rem;
+  min-height: 60px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-.upload-button:hover {
-  background-color: var(--primary-hover);
+.upload-button:hover:not(:disabled) {
+  background: linear-gradient(
+    135deg,
+    var(--primary-hover),
+    var(--accent-hover)
+  );
+  transform: translateY(-2px);
+  box-shadow: var(--box-shadow-hover);
 }
 
 .upload-button:disabled {
-  background-color: var(--text-light);
+  background: linear-gradient(135deg, #6b7280, #4b5563);
   cursor: not-allowed;
+  transform: none;
 }
 
-/* ==========================================================================
-   Loading Spinner
-   ========================================================================== */
 .button-spinner {
   width: 20px;
   height: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid transparent;
+  border-top: 2px solid white;
   border-radius: 50%;
-  border-top-color: white;
-  animation: spin 1s ease-in-out infinite;
-  margin-right: 0.75rem;
+  animation: spin 1s linear infinite;
 }
 
-/* ==========================================================================
-   Mobile Responsive Design
-   ========================================================================== */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
-  .file-drop-area {
+  .upload-container {
+    padding: 1rem 0;
+  }
+  .upload-header {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .upload-header h1 {
+    font-size: 2rem;
+  }
+  .upload-form {
     padding: 1.5rem;
   }
-
+  .file-drop-area {
+    padding: 2rem 1rem;
+  }
   .file-info {
     flex-direction: column;
     text-align: center;
+    gap: 1rem;
   }
-
   .file-icon {
-    margin-right: 0;
-    margin-bottom: 0.5rem;
+    font-size: 2.5rem;
   }
+  .file-details {
+    margin-left: 0;
+  }
+  .remove-file-btn {
+    align-self: center;
+  }
+}
 
-  .file-name {
-    margin-right: 0;
-    margin-bottom: 0.5rem;
+@media (max-width: 480px) {
+  .upload-header h1 {
+    font-size: 1.8rem;
+  }
+  .upload-subtitle {
+    font-size: 1rem;
+  }
+  .form-section h3 {
+    font-size: 1.2rem;
+  }
+  .upload-button {
+    font-size: 1rem;
   }
 }

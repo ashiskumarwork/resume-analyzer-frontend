@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Landing Page Styles
+   Landing Page Styles - Student-Friendly Version
    ========================================================================== */
 
 .landing-container {
@@ -14,11 +14,12 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 5rem 2rem;
-  background-color: var(--background-color);
-  margin-bottom: 4rem;
-  border-radius: 10px;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #fef7ff 0%, #fef3c7 100%);
+  margin-bottom: 3rem;
+  border-radius: 20px;
   box-shadow: var(--box-shadow);
+  border: 2px solid rgba(99, 102, 241, 0.1);
 }
 
 .hero-content {
@@ -26,27 +27,31 @@
 }
 
 .hero-content h1 {
-  font-size: 3.5rem;
+  font-size: 3.2rem;
   line-height: 1.2;
   margin-bottom: 1.5rem;
   color: var(--primary-color);
   background: linear-gradient(
     to right,
     var(--primary-color),
-    var(--secondary-color)
+    var(--accent-color)
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  font-family: "Comic Neue", cursive;
+  font-weight: 700;
 }
 
 .hero-subtitle {
-  font-size: 1.5rem;
-  color: var(--text-light);
+  font-size: 1.3rem;
+  color: var(--text-color);
   margin-bottom: 2.5rem;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  font-family: "Inter", sans-serif;
+  line-height: 1.6;
 }
 
 /* ==========================================================================
@@ -56,25 +61,36 @@
   display: flex;
   gap: 1rem;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .primary-button {
   display: inline-block;
-  background-color: var(--primary-color);
+  background: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--accent-color)
+  );
   color: white;
   padding: 1rem 2rem;
-  border-radius: 6px;
+  border-radius: 16px;
   font-weight: 600;
   font-size: 1.1rem;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+  box-shadow: var(--box-shadow);
+  border: none;
+  font-family: "Inter", sans-serif;
 }
 
 .primary-button:hover {
-  background-color: var(--primary-hover);
+  background: linear-gradient(
+    135deg,
+    var(--primary-hover),
+    var(--accent-hover)
+  );
   color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(79, 70, 229, 0.3);
+  transform: translateY(-3px);
+  box-shadow: var(--box-shadow-hover);
 }
 
 .secondary-button {
@@ -82,50 +98,48 @@
   background-color: transparent;
   color: var(--text-color);
   padding: 1rem 2rem;
-  border-radius: 6px;
+  border-radius: 16px;
   font-weight: 600;
   font-size: 1.1rem;
-  border: 2px solid var(--border-color);
+  border: 2px solid var(--primary-color);
   transition: all 0.3s ease;
+  font-family: "Inter", sans-serif;
 }
 
 .secondary-button:hover {
-  background-color: var(--background-light);
-  color: var(--primary-color);
-  border-color: var(--primary-color);
-  transform: translateY(-2px);
+  background-color: var(--primary-color);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: var(--box-shadow-hover);
 }
 
 /* ==========================================================================
    Features Section
    ========================================================================== */
 .features-section {
-  padding: 4rem 2rem;
-  text-align: center;
   margin-bottom: 4rem;
+  text-align: center;
 }
 
 .features-section h2 {
   font-size: 2.5rem;
   margin-bottom: 3rem;
-  position: relative;
-  display: inline-block;
+  color: var(--primary-color);
+  font-family: "Comic Neue", cursive;
+  font-weight: 700;
 }
 
-/* Section Title Underline */
 .features-section h2:after {
   content: "";
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
+  display: block;
   width: 80px;
   height: 4px;
   background: linear-gradient(
     to right,
     var(--primary-color),
-    var(--secondary-color)
+    var(--accent-color)
   );
+  margin: 1rem auto 0;
   border-radius: 2px;
 }
 
@@ -133,356 +147,132 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  margin-top: 3rem;
 }
 
-/* ==========================================================================
-   Feature Cards
-   ========================================================================== */
 .feature-card {
-  background-color: var(--background-color);
-  border-radius: 10px;
-  padding: 2.5rem 2rem;
+  background: white;
+  padding: 2rem 1.5rem;
+  border-radius: 20px;
   box-shadow: var(--box-shadow);
   transition: all 0.3s ease;
-  border-top: 4px solid transparent;
+  border: 2px solid transparent;
+  text-align: center;
 }
 
 .feature-card:hover {
-  transform: translateY(-10px);
-  border-top: 4px solid var(--primary-color);
+  transform: translateY(-5px);
+  box-shadow: var(--box-shadow-hover);
+  border-color: var(--primary-color);
 }
 
 .feature-icon {
   font-size: 3rem;
-  color: var(--primary-color);
-  margin-bottom: 1.5rem;
-  background: rgba(79, 70, 229, 0.1);
-  width: 80px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  margin: 0 auto 1.5rem;
+  margin-bottom: 1rem;
+  display: block;
 }
 
 .feature-card h3 {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   margin-bottom: 1rem;
   color: var(--text-color);
+  font-family: "Comic Neue", cursive;
+  font-weight: 600;
 }
 
 .feature-card p {
   color: var(--text-light);
+  font-family: "Inter", sans-serif;
   line-height: 1.6;
 }
 
 /* ==========================================================================
-   Benefits Section
-   ========================================================================== */
-.benefits-section {
-  padding: 5rem 2rem;
-  background-color: var(--background-color);
-  margin-bottom: 4rem;
-  border-radius: 10px;
-  box-shadow: var(--box-shadow);
-  text-align: center;
-}
-
-.benefits-content {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.benefits-content h2 {
-  font-size: 2.5rem;
-  margin-bottom: 2.5rem;
-  position: relative;
-  display: inline-block;
-}
-
-.benefits-content h2:after {
-  content: "";
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 4px;
-  background: linear-gradient(
-    to right,
-    var(--primary-color),
-    var(--secondary-color)
-  );
-  border-radius: 2px;
-}
-
-/* ==========================================================================
-   Benefits List
-   ========================================================================== */
-.benefits-list {
-  list-style: none;
-  margin: 0 auto 2.5rem;
-  max-width: 600px;
-  text-align: left;
-}
-
-.benefits-list li {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 1.5rem;
-  background-color: var(--background-light);
-  padding: 1.2rem;
-  border-radius: 8px;
-  transition: transform 0.3s ease;
-}
-
-.benefits-list li:hover {
-  transform: translateX(5px);
-}
-
-.benefits-list i {
-  color: var(--success-color);
-  margin-right: 1rem;
-  font-size: 1.25rem;
-  flex-shrink: 0;
-  margin-top: 0.2rem;
-}
-
-.benefits-list span {
-  font-size: 1.1rem;
-  line-height: 1.5;
-}
-
-/* ==========================================================================
-   CTA Button
-   ========================================================================== */
-.cta-button {
-  display: inline-block;
-  background-color: var(--primary-color);
-  color: white;
-  padding: 1rem 2rem;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 1.1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
-}
-
-.cta-button:hover {
-  background-color: var(--primary-hover);
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(79, 70, 229, 0.3);
-}
-
-/* ==========================================================================
-   Testimonials Section
-   ========================================================================== */
-.testimonials-section {
-  padding: 4rem 2rem;
-  text-align: center;
-  margin-bottom: 4rem;
-}
-
-.testimonials-section h2 {
-  font-size: 2.5rem;
-  margin-bottom: 3rem;
-  position: relative;
-  display: inline-block;
-}
-
-.testimonials-section h2:after {
-  content: "";
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 4px;
-  background: linear-gradient(
-    to right,
-    var(--primary-color),
-    var(--secondary-color)
-  );
-  border-radius: 2px;
-}
-
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* ==========================================================================
-   Testimonial Cards
-   ========================================================================== */
-.testimonial-card {
-  background-color: var(--background-color);
-  border-radius: 10px;
-  padding: 2rem;
-  box-shadow: var(--box-shadow);
-  text-align: left;
-  transition: transform 0.3s ease;
-  border-left: 4px solid var(--primary-color);
-}
-
-.testimonial-card:hover {
-  transform: translateY(-10px);
-}
-
-.testimonial-content {
-  margin-bottom: 1.5rem;
-  position: relative;
-}
-
-.testimonial-content:before {
-  content: '"';
-  font-size: 5rem;
-  color: rgba(79, 70, 229, 0.1);
-  position: absolute;
-  top: -2rem;
-  left: -1rem;
-  font-family: serif;
-}
-
-.testimonial-content p {
-  font-style: italic;
-  color: var(--text-color);
-  line-height: 1.7;
-  position: relative;
-  z-index: 1;
-}
-
-.testimonial-author {
-  display: flex;
-  align-items: center;
-  border-top: 1px solid var(--border-color);
-  padding-top: 1.5rem;
-}
-
-.author-avatar {
-  margin-right: 1rem;
-  font-size: 2.5rem;
-  color: var(--primary-color);
-}
-
-.author-info h4 {
-  margin-bottom: 0.25rem;
-  font-size: 1.1rem;
-}
-
-.author-info p {
-  color: var(--text-light);
-  font-size: 0.875rem;
-}
-
-/* ==========================================================================
-   Final CTA Section
+   CTA Section
    ========================================================================== */
 .cta-section {
   background: linear-gradient(
     135deg,
     var(--primary-color),
-    var(--secondary-color)
+    var(--accent-color)
   );
   color: white;
-  padding: 5rem 2rem;
+  padding: 4rem 2rem;
   text-align: center;
-  border-radius: 10px;
-  margin: 0 2rem 4rem;
-  box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+  border-radius: 20px;
+  box-shadow: var(--box-shadow);
 }
 
 .cta-section h2 {
   font-size: 2.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+  font-family: "Comic Neue", cursive;
+  font-weight: 700;
 }
 
 .cta-section p {
-  margin-bottom: 2.5rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
   font-size: 1.2rem;
+  margin-bottom: 2rem;
+  font-family: "Inter", sans-serif;
   opacity: 0.9;
 }
 
 .cta-section .cta-button {
-  background-color: white;
+  background: white;
   color: var(--primary-color);
   font-weight: 600;
-  padding: 1.2rem 2.5rem;
-  font-size: 1.2rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 1rem 2.5rem;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: var(--box-shadow);
+  border: none;
+  font-family: "Inter", sans-serif;
 }
 
 .cta-section .cta-button:hover {
-  background-color: rgba(255, 255, 255, 0.9);
+  background: var(--background-warm);
   color: var(--primary-color);
   transform: translateY(-3px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--box-shadow-hover);
 }
 
 /* ==========================================================================
-   Mobile Responsive Design
+   Responsive Design
    ========================================================================== */
 @media (max-width: 992px) {
   .hero-content h1 {
     font-size: 2.8rem;
   }
   .hero-subtitle {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
-
   .features-section h2,
-  .benefits-content h2,
-  .testimonials-section h2,
   .cta-section h2 {
-    font-size: 2.2rem;
+    font-size: 2rem;
   }
-
   .cta-section {
-    margin: 0 1rem 3rem;
-    padding: 4rem 1.5rem;
+    padding: 3rem 1.5rem;
   }
 }
 
 @media (max-width: 768px) {
   .hero-content h1 {
-    font-size: 2.3rem;
+    font-size: 2.2rem;
   }
   .hero-subtitle {
     font-size: 1.1rem;
   }
-
   .features-section h2,
-  .benefits-content h2,
-  .testimonials-section h2,
   .cta-section h2 {
-    font-size: 1.9rem;
+    font-size: 1.8rem;
   }
-
   .cta-section {
-    padding: 3rem 1.5rem;
+    padding: 2.5rem 1rem;
   }
-
   .primary-button,
   .secondary-button,
   .cta-button {
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-  }
-
-  .benefits-list li {
-    padding: 1rem;
-  }
-
-  .benefits-list span {
+    padding: 0.875rem 1.5rem;
     font-size: 1rem;
   }
 }
