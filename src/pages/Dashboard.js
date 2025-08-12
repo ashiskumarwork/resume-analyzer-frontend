@@ -34,7 +34,7 @@ const Dashboard = () => {
       averageScore:
         validScores.length > 0
           ? (
-              validScores.reduce((sum, score) => sum + score, 0) /
+              validScores.reduce((sum, item) => sum + item.atsScore, 0) /
               validScores.length
             ).toFixed(1)
           : "N/A",
