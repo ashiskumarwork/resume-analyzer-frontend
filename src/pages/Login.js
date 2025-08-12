@@ -1,47 +1,44 @@
-"use client";
-
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Auth.css";
 
+// Login: basic email/password login form with loading and error UI
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  // Controlled inputs
+  const handleChange = useCallback((e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+  // Attempt login then navigate; show friendly error on failure
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setError("");
+      setLoading(true);
 
-    try {
-      const { email, password } = formData;
-      const result = await login(email, password);
-
-      if (result.success) {
-        navigate("/dashboard");
-      } else {
-        setError(result.message);
+      try {
+        const { email, password } = formData;
+        const result = await login(email, password);
+        if (result.success) {
+          navigate("/dashboard");
+        } else {
+          setError(result.message);
+        }
+      } catch (err) {
+        setError("An unexpected error occurred. Please try again.");
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      setError("An unexpected error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [formData, login, navigate]
+  );
 
   return (
     <div className="auth-container">

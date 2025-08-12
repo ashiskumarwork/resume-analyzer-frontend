@@ -1,10 +1,9 @@
-"use client";
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import api from "../utils/api";
 import "../styles/ResumeHistory.css";
 
+// ResumeHistory: searchable, sortable list of analyzed resumes with download.
 const ResumeHistory = () => {
   const [resumes, setResumes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,6 +12,7 @@ const ResumeHistory = () => {
   const [sortBy, setSortBy] = useState("date");
   const [downloadingId, setDownloadingId] = useState(null);
 
+  // Fetch list of resumes on mount
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -27,82 +27,93 @@ const ResumeHistory = () => {
     fetchData();
   }, []);
 
+  // Score helpers for color and label
   const getScoreClass = (score) => {
-    if (score == null || score === undefined) return "no-score";
+    if (score == null) return "no-score";
     if (score >= 7) return "high-score";
     if (score >= 5) return "medium-score";
     return "low-score";
   };
 
   const getScoreDescription = (score) => {
-    if (score == null || score === undefined) return "No score";
+    if (score == null) return "No score";
     if (score >= 7) return "Great!";
     if (score >= 5) return "Good!";
     return "Needs work";
   };
 
+  // Download original file (guards against duplicate clicks per-item)
   const handleDownload = async (resumeId, fileName) => {
     if (downloadingId === resumeId) return;
 
     setDownloadingId(resumeId);
+    let url = null;
     try {
       const response = await api.get(`/resume/download/${resumeId}`, {
         responseType: "blob",
       });
 
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute("download", fileName || "resume.pdf");
       document.body.appendChild(link);
       link.click();
       link.remove();
-      window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error("Download failed:", err);
     } finally {
+      if (url) {
+        window.URL.revokeObjectURL(url);
+      }
       setDownloadingId(null);
     }
   };
 
-  const filteredAndSortedResumes = resumes
-    .filter((resume) => {
-      const searchLower = searchTerm.toLowerCase();
-      const fileName = resume.fileName || resume.originalName || "Resume";
-      const jobRole = resume.jobRole || "N/A";
-      return (
-        fileName.toLowerCase().includes(searchLower) ||
-        jobRole.toLowerCase().includes(searchLower)
-      );
-    })
-    .sort((a, b) => {
-      switch (sortBy) {
-        case "date":
-          return new Date(b.createdAt) - new Date(a.createdAt);
-        case "score":
-          const scoreA = a.atsScore != null ? a.atsScore : -1;
-          const scoreB = b.atsScore != null ? b.atsScore : -1;
-          return scoreB - scoreA;
-        case "name":
-          const nameA = a.fileName || a.originalName || "";
-          const nameB = b.fileName || b.originalName || "";
-          return nameA.localeCompare(nameB);
-        default:
-          return 0;
-      }
-    });
+  // Memoized filtered and sorted resumes for better performance
+  const filteredAndSortedResumes = useMemo(() => {
+    return resumes
+      .filter((resume) => {
+        if (!searchTerm) return true;
+        const searchLower = searchTerm.toLowerCase();
+        const fileName = resume.fileName || resume.originalName || "Resume";
+        const jobRole = resume.jobRole || "N/A";
+        return (
+          fileName.toLowerCase().includes(searchLower) ||
+          jobRole.toLowerCase().includes(searchLower)
+        );
+      })
+      .sort((a, b) => {
+        switch (sortBy) {
+          case "date":
+            return new Date(b.createdAt) - new Date(a.createdAt);
+          case "score": {
+            const scoreA = a.atsScore ?? -1;
+            const scoreB = b.atsScore ?? -1;
+            return scoreB - scoreA;
+          }
+          case "name": {
+            const nameA = a.fileName || a.originalName || "";
+            const nameB = b.fileName || b.originalName || "";
+            return nameA.localeCompare(nameB);
+          }
+          default:
+            return 0;
+        }
+      });
+  }, [resumes, searchTerm, sortBy]);
 
-  const averageScore =
-    resumes.length > 0
-      ? (
-          resumes
-            .filter((r) => r.atsScore != null && r.atsScore !== undefined)
-            .reduce((sum, r) => sum + r.atsScore, 0) /
-          resumes.filter((r) => r.atsScore != null && r.atsScore !== undefined)
-            .length
-        ).toFixed(1)
-      : 0;
+  // Memoized average ATS score calculation
+  const averageScore = useMemo(() => {
+    if (resumes.length === 0) return 0;
+    const validScores = resumes.filter((r) => r.atsScore != null);
+    if (validScores.length === 0) return 0;
+    return (
+      validScores.reduce((sum, r) => sum + r.atsScore, 0) / validScores.length
+    ).toFixed(1);
+  }, [resumes]);
 
+  // Loading state
   if (loading) {
     return (
       <div className="history-container">
@@ -123,6 +134,7 @@ const ResumeHistory = () => {
     );
   }
 
+  // Error state
   if (error) {
     return (
       <div className="history-container">
@@ -134,6 +146,7 @@ const ResumeHistory = () => {
     );
   }
 
+  // Main content
   return (
     <div className="history-container">
       <div className="history-header">
@@ -149,6 +162,7 @@ const ResumeHistory = () => {
         </div>
       </div>
 
+      {/* Search + sort controls */}
       <div className="history-controls">
         <div className="search-container">
           <input
@@ -172,6 +186,7 @@ const ResumeHistory = () => {
         </div>
       </div>
 
+      {/* Empty states vs results */}
       {resumes.length === 0 ? (
         <div className="empty-state">
           <div className="empty-icon">📄</div>
@@ -212,12 +227,7 @@ const ResumeHistory = () => {
                         resume.atsScore
                       )}`}
                     >
-                      <span>
-                        {resume.atsScore != null &&
-                        resume.atsScore !== undefined
-                          ? resume.atsScore
-                          : "N/A"}
-                      </span>
+                      <span>{resume.atsScore ?? "N/A"}</span>
                     </div>
                     <p className="score-label">ATS Score</p>
                     <p className="score-description">

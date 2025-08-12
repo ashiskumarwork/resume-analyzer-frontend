@@ -1,10 +1,9 @@
-"use client";
-
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Auth.css";
 
+// Register: account creation with basic client validation
 const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -17,44 +16,44 @@ const Register = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+  // Controlled inputs
+  const handleChange = useCallback((e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+  // Client validation then attempt registration
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setError("");
 
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters");
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const { name, email, password } = formData;
-      const result = await register(name, email, password);
-
-      if (result.success) {
-        navigate("/login");
-      } else {
-        setError(result.message);
+      if (formData.password !== formData.confirmPassword) {
+        setError("Passwords do not match");
+        return;
       }
-    } catch (err) {
-      setError("An unexpected error occurred. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+
+      if (formData.password.length < 6) {
+        setError("Password must be at least 6 characters");
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const { name, email, password } = formData;
+        const result = await register(name, email, password);
+        if (result.success) {
+          navigate("/login");
+        } else {
+          setError(result.message);
+        }
+      } catch (err) {
+        setError("An unexpected error occurred. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [formData, register, navigate]
+  );
 
   return (
     <div className="auth-container">

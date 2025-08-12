@@ -1,10 +1,9 @@
-"use client";
-
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../utils/api";
 import "../styles/UploadResume.css";
 
+// UploadResume: drag-and-drop file upload with job role input and submit to API.
 const UploadResume = () => {
   const [file, setFile] = useState(null);
   const [jobRole, setJobRole] = useState("");
@@ -13,6 +12,7 @@ const UploadResume = () => {
   const [dragActive, setDragActive] = useState(false);
   const navigate = useNavigate();
 
+  // Suggested roles (datalist) - optimized array
   const commonJobRoles = [
     "Frontend Developer",
     "Backend Developer",
@@ -31,7 +31,8 @@ const UploadResume = () => {
     "Financial Analyst",
   ];
 
-  const validateAndSetFile = (selectedFile) => {
+  // Accepts PDF/DOCX via MIME type or extension and stores the file
+  const validateAndSetFile = useCallback((selectedFile) => {
     if (!selectedFile) return;
 
     const fileType = selectedFile.type;
@@ -50,23 +51,36 @@ const UploadResume = () => {
       setFile(null);
       setError("Please upload a PDF or DOCX file");
     }
-  };
+  }, []);
 
-  const handleFileChange = (e) => validateAndSetFile(e.target.files[0]);
+  // File selection via input
+  const handleFileChange = useCallback(
+    (e) => {
+      validateAndSetFile(e.target.files[0]);
+    },
+    [validateAndSetFile]
+  );
 
-  const handleDrag = (e) => {
+  // Drag-and-drop handlers
+  const handleDrag = useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(e.type === "dragenter" || e.type === "dragover");
-  };
+  }, []);
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    if (e.dataTransfer.files?.[0]) validateAndSetFile(e.dataTransfer.files[0]);
-  };
+  const handleDrop = useCallback(
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setDragActive(false);
+      if (e.dataTransfer.files?.[0]) {
+        validateAndSetFile(e.dataTransfer.files[0]);
+      }
+    },
+    [validateAndSetFile]
+  );
 
+  // Submit form data to backend and navigate to latest resume details
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -92,6 +106,7 @@ const UploadResume = () => {
       });
 
       if (response.data?.success) {
+        // Fetch latest history to show the fresh analysis
         const historyResponse = await api.get("/resume/history");
         const latestResumeId = historyResponse.data?.history?.[0]?._id;
         navigate(latestResumeId ? `/resume/${latestResumeId}` : "/history");
@@ -107,18 +122,19 @@ const UploadResume = () => {
     }
   };
 
-  const removeFile = () => {
+  const removeFile = useCallback(() => {
     setFile(null);
     setError("");
-  };
+  }, []);
 
-  const formatFileSize = (bytes) => {
+  // Format file size in a friendly unit
+  const formatFileSize = useCallback((bytes) => {
     if (bytes === 0) return "0 Bytes";
     const k = 1024;
     const sizes = ["Bytes", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
-  };
+  }, []);
 
   return (
     <div className="upload-container">
@@ -130,6 +146,7 @@ const UploadResume = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="upload-form">
+        {/* Step 1: File */}
         <div className="form-section">
           <h3>📄 Step 1: Upload Your Resume</h3>
           <div
@@ -163,6 +180,7 @@ const UploadResume = () => {
           </p>
         </div>
 
+        {/* Selected file preview */}
         {file && (
           <div className="file-info">
             <div className="file-icon">📄</div>
@@ -180,6 +198,7 @@ const UploadResume = () => {
           </div>
         )}
 
+        {/* Step 2: Job role */}
         <div className="form-section">
           <h3>🎯 Step 2: Select Job Role</h3>
           <div className="form-group">
@@ -206,8 +225,8 @@ const UploadResume = () => {
           </div>
         </div>
 
+        {/* Error + submit */}
         {error && <div className="error-message">{error}</div>}
-
         <button type="submit" disabled={loading} className="upload-button">
           {loading ? (
             <>

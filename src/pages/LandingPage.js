@@ -1,19 +1,12 @@
-"use client";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/LandingPage.css";
 
-/**
- * Landing Page Component
- * Main marketing page that introduces the AI Resume Analyzer
- * Shows different CTAs based on authentication status
- */
 const LandingPage = () => {
   const { isAuthenticated } = useAuth();
 
   return (
     <div className="landing-container">
-      {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-content">
           <h1>Make Your Resume Awesome! 🚀</h1>
@@ -44,14 +37,12 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Student-friendly note */}
       <div className="student-note">
         <strong>Hey there! 👋</strong> This tool was made by students, for
         students. We know how tough job hunting can be, so we've made this super
         easy to use!
       </div>
 
-      {/* How It Works Section */}
       <section className="features-section">
         <h2>How It Works (Super Simple!) 🎯</h2>
         <div className="features-grid">
@@ -84,7 +75,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Final CTA Section */}
       <section className="cta-section">
         <h2>Ready to Make Your Resume Shine? ✨</h2>
         <p>

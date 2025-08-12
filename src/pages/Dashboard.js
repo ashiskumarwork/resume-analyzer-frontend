@@ -1,34 +1,20 @@
-"use client";
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import api from "../utils/api";
 import "../styles/Dashboard.css";
 
+// Dashboard: shows quick stats and suggested actions based on resume history.
 const Dashboard = () => {
-  const [stats, setStats] = useState({ totalResumes: 0, averageScore: 0 });
+  const [resumes, setResumes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Fetch resume history to build stats
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await api.get("/resume/history");
-        const history = response.data.history;
-        const validScores = history
-          .filter((item) => item.atsScore != null)
-          .map((item) => item.atsScore);
-
-        setStats({
-          totalResumes: history.length,
-          averageScore:
-            validScores.length > 0
-              ? (
-                  validScores.reduce((sum, score) => sum + score, 0) /
-                  validScores.length
-                ).toFixed(1)
-              : "N/A",
-        });
+        setResumes(response.data.history || []);
       } catch (err) {
         setError("Oops! Something went wrong while loading your dashboard 😅");
       } finally {
@@ -38,6 +24,22 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
+  // Memoized stats calculation for better performance
+  const stats = useMemo(() => {
+    const validScores = resumes.filter((item) => item.atsScore != null);
+    return {
+      totalResumes: resumes.length,
+      averageScore:
+        validScores.length > 0
+          ? (
+              validScores.reduce((sum, score) => sum + score, 0) /
+              validScores.length
+            ).toFixed(1)
+          : "N/A",
+    };
+  }, [resumes]);
+
+  // Friendly explanation for the average score
   const getScoreMessage = (score) => {
     if (score === "N/A") return "Upload your first resume to get started! 🚀";
     const numScore = parseFloat(score);
@@ -47,6 +49,7 @@ const Dashboard = () => {
     return "Keep working on it! Every improvement counts! 🔥";
   };
 
+  // Loading state with skeletons
   if (loading) {
     return (
       <div className="dashboard-container">
@@ -66,6 +69,7 @@ const Dashboard = () => {
     );
   }
 
+  // Main content
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
@@ -75,6 +79,7 @@ const Dashboard = () => {
 
       {error && <div className="error-message">{error}</div>}
 
+      {/* Stats summary */}
       <div className="stats-grid">
         <div className="stat-card">
           <div className="stat-icon">📄</div>
@@ -107,6 +112,7 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Actions or welcome section */}
       {stats.totalResumes > 0 ? (
         <div className="dashboard-actions">
           <div className="action-section">

@@ -1,6 +1,10 @@
-"use client";
-
-import { createContext, useState, useContext, useEffect } from "react";
+import {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+} from "react";
 import api from "../utils/api";
 
 // Create authentication context
@@ -37,7 +41,7 @@ export const AuthProvider = ({ children }) => {
    * @param {string} password - User password
    * @returns {Object} Success status and message
    */
-  const login = async (email, password) => {
+  const login = useCallback(async (email, password) => {
     try {
       const response = await api.post("/auth/login", { email, password });
       const { token } = response.data;
@@ -53,7 +57,7 @@ export const AuthProvider = ({ children }) => {
         message: error.response?.data?.error || "Login failed",
       };
     }
-  };
+  }, []);
 
   /**
    * Register new user
@@ -62,7 +66,7 @@ export const AuthProvider = ({ children }) => {
    * @param {string} password - User password
    * @returns {Object} Success status and message
    */
-  const register = async (name, email, password) => {
+  const register = useCallback(async (name, email, password) => {
     try {
       await api.post("/auth/register", { name, email, password });
       return { success: true };
@@ -72,16 +76,16 @@ export const AuthProvider = ({ children }) => {
         message: error.response?.data?.error || "Registration failed",
       };
     }
-  };
+  }, []);
 
   /**
    * Logout user and clear authentication state
    */
-  const logout = () => {
+  const logout = useCallback(() => {
     localStorage.removeItem("token");
     setIsAuthenticated(false);
     setUser(null);
-  };
+  }, []);
 
   // Context value provided to all child components
   const value = {

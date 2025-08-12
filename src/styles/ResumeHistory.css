@@ -43,14 +43,85 @@
 }
 
 .stats-summary span {
-  background: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 12px;
-  font-weight: 600;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  padding: 1.25rem 2rem;
+  border-radius: 18px;
+  font-weight: 700;
   color: var(--primary-color);
   font-family: "Inter", sans-serif;
-  box-shadow: var(--box-shadow);
-  border: 2px solid rgba(99, 102, 241, 0.1);
+  font-size: 1.1rem;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.15);
+  border: 2px solid rgba(99, 102, 241, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  min-width: 160px;
+  text-align: center;
+  letter-spacing: 0.025em;
+}
+
+.stats-summary span::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  border-radius: 16px 16px 0 0;
+}
+
+.stats-summary span:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(99, 102, 241, 0.3);
+  border-color: var(--primary-color);
+}
+
+.stats-summary span:active {
+  transform: translateY(-2px) scale(0.98);
+  transition: all 0.1s ease;
+}
+
+.stats-summary span:first-child {
+  background: linear-gradient(135deg, #fef7ff 0%, #f3e8ff 100%);
+  border-color: rgba(99, 102, 241, 0.3);
+  color: var(--primary-color);
+}
+
+.stats-summary span:first-child::before {
+  background: linear-gradient(90deg, var(--primary-color), #8b5cf6);
+}
+
+.stats-summary span:last-child {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: var(--success-color);
+}
+
+.stats-summary span:last-child::before {
+  background: linear-gradient(90deg, var(--success-color), #10b981);
+}
+
+/* Animation for stats buttons on page load */
+.stats-summary span {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.stats-summary span:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.stats-summary span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Controls */
@@ -427,6 +498,8 @@
   .stats-summary span {
     width: 100%;
     text-align: center;
+    min-width: auto;
+    padding: 1.25rem 1.5rem;
   }
   .history-controls {
     flex-direction: column;

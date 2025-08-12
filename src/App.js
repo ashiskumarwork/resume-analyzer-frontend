@@ -16,14 +16,10 @@ import ResumeDetails from "./pages/ResumeDetails";
 import LandingPage from "./pages/LandingPage";
 import "./styles/App.css";
 
-/**
- * Protected Route Component
- * Ensures only authenticated users can access protected pages
- */
+// ProtectedRoute: gates routes behind authentication. Shows a loading spinner
+// while auth status is being resolved, and redirects to /login if unauthenticated.
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
-
-  // Show loading spinner while checking authentication status
   if (loading) {
     return (
       <div className="loading-container">
@@ -31,28 +27,26 @@ const ProtectedRoute = ({ children }) => {
       </div>
     );
   }
-
-  // Redirect to login if not authenticated, otherwise render children
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
-/**
- * Main App Component
- * Sets up routing and authentication context for the entire application
- */
+// App: top-level router + auth provider. Defines all public and protected routes.
 function App() {
   return (
     <AuthProvider>
       <Router>
+        {/* Global navigation across all pages */}
         <Navbar />
+
+        {/* Main routed content */}
         <div className="container">
           <Routes>
-            {/* Public Routes */}
+            {/* Public routes */}
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
-            {/* Protected Routes - Require Authentication */}
+            {/* Auth-protected routes */}
             <Route
               path="/dashboard"
               element={

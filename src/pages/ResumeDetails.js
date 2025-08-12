@@ -1,16 +1,16 @@
-"use client";
-
 import { useState, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import api from "../utils/api";
 import "../styles/ResumeDetails.css";
 
+// ResumeDetails: shows a single resume's basic info, ATS score, and raw AI feedback.
 const ResumeDetails = () => {
   const { id } = useParams();
   const [resume, setResume] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Fetch selected resume from history by ID
   const fetchResumeDetails = useCallback(async () => {
     setLoading(true);
     setError("");
@@ -38,26 +38,23 @@ const ResumeDetails = () => {
     fetchResumeDetails();
   }, [fetchResumeDetails]);
 
+  // Score helpers
   const getScoreClass = (score) => {
-    if (score === null || score === undefined) return "no-score";
+    if (score == null) return "no-score";
     if (score >= 7) return "high-score";
     if (score >= 5) return "medium-score";
     return "low-score";
   };
 
   const getScoreDescription = (score) => {
-    if (score === null || score === undefined) {
-      return "ATS score not available.";
-    }
-    if (score >= 7) {
+    if (score == null) return "ATS score not available.";
+    if (score >= 7)
       return "Great! Your resume is well-optimized for ATS systems.";
-    }
-    if (score >= 5) {
-      return "Good! Your resume has moderate ATS compatibility.";
-    }
+    if (score >= 5) return "Good! Your resume has moderate ATS compatibility.";
     return "Your resume needs improvements for better ATS compatibility.";
   };
 
+  // Loading branch
   if (loading) {
     return (
       <div className="details-container">
@@ -73,6 +70,7 @@ const ResumeDetails = () => {
     );
   }
 
+  // Error/empty branch
   if (error || !resume) {
     return (
       <div className="details-container">
@@ -86,11 +84,9 @@ const ResumeDetails = () => {
     );
   }
 
-  const atsScore =
-    resume.atsScore !== null && resume.atsScore !== undefined
-      ? resume.atsScore
-      : null;
+  const atsScore = resume.atsScore ?? null;
 
+  // Main content
   return (
     <div className="details-container">
       <Link to="/history" className="back-button">
@@ -107,7 +103,7 @@ const ResumeDetails = () => {
 
           <div className="score-section">
             <div className={`score-circle ${getScoreClass(atsScore)}`}>
-              <span>{atsScore !== null ? atsScore : "N/A"}</span>
+              <span>{atsScore ?? "N/A"}</span>
             </div>
             <p>ATS Score</p>
             <p className="score-description">{getScoreDescription(atsScore)}</p>
