@@ -117,12 +117,7 @@
   animation-delay: 0.2s;
 }
 
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* Using global fadeInUp animation from App.css */
 
 /* Controls */
 .history-controls {
@@ -458,26 +453,9 @@
   margin-bottom: 0;
 }
 
-@keyframes loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
+/* Using global loading animation from App.css */
 
-.error-message {
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--error-color);
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  text-align: center;
-  font-weight: 600;
-  font-family: "Inter", sans-serif;
-  border: 2px solid rgba(239, 68, 68, 0.2);
-}
+/* Error Message - Using global styles from App.css */
 
 /* Mobile Responsive */
 @media (max-width: 768px) {

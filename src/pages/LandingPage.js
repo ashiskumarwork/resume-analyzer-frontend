@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "../styles/LandingPage.css";
 
+/**
+ * LandingPage: Main landing page with feature overview and call-to-action
+ */
 const LandingPage = () => {
   const { isAuthenticated } = useAuth();
 

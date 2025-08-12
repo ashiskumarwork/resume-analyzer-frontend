@@ -38,20 +38,29 @@ const ResumeDetails = () => {
     fetchResumeDetails();
   }, [fetchResumeDetails]);
 
+  // Score threshold constants
+  const SCORE_THRESHOLDS = {
+    HIGH: 7,
+    MEDIUM: 5,
+  };
+
   // Score helpers
   const getScoreClass = (score) => {
     if (score == null) return "no-score";
-    if (score >= 7) return "high-score";
-    if (score >= 5) return "medium-score";
-    return "low-score";
+    return score >= SCORE_THRESHOLDS.HIGH
+      ? "high-score"
+      : score >= SCORE_THRESHOLDS.MEDIUM
+      ? "medium-score"
+      : "low-score";
   };
 
   const getScoreDescription = (score) => {
     if (score == null) return "ATS score not available.";
-    if (score >= 7)
-      return "Great! Your resume is well-optimized for ATS systems.";
-    if (score >= 5) return "Good! Your resume has moderate ATS compatibility.";
-    return "Your resume needs improvements for better ATS compatibility.";
+    return score >= SCORE_THRESHOLDS.HIGH
+      ? "Great! Your resume is well-optimized for ATS systems."
+      : score >= SCORE_THRESHOLDS.MEDIUM
+      ? "Good! Your resume has moderate ATS compatibility."
+      : "Your resume needs improvements for better ATS compatibility.";
   };
 
   // Loading branch

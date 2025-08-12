@@ -159,14 +159,7 @@
   animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+/* Using global spin animation from App.css */
 
 /* Footer */
 .auth-footer {
@@ -196,18 +189,7 @@
   text-decoration: underline;
 }
 
-/* Error Message */
-.error-message {
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--error-color);
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
-  margin-bottom: 1rem;
-  text-align: center;
-  font-weight: 600;
-  font-family: "Inter", sans-serif;
-  border: 2px solid rgba(239, 68, 68, 0.2);
-}
+/* Error Message - Using global styles from App.css */
 
 /* Mobile Responsive */
 @media (max-width: 768px) {

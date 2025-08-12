@@ -1,70 +1,136 @@
-# Getting Started with Create React App
+# AI Resume Analyzer Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern React.js web application that provides AI-powered resume analysis and ATS (Applicant Tracking System) compatibility scoring.
 
-## Available Scripts
+## 🚀 Features
 
-In the project directory, you can run:
+- **AI-Powered Analysis**: Get instant feedback on your resume using advanced AI
+- **ATS Compatibility Scoring**: Receive scores from 1-10 indicating how well your resume performs with ATS systems
+- **Drag & Drop Upload**: Easy file upload with support for PDF and DOCX formats
+- **Resume History**: Track and manage all your uploaded resumes
+- **Detailed Feedback**: View comprehensive AI-generated feedback for each resume
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **User Authentication**: Secure login and registration system
 
-### `npm start`
+## 🛠️ Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Frontend**: React.js 18.2.0
+- **Routing**: React Router DOM 6.8.0
+- **HTTP Client**: Axios 1.9.0
+- **Styling**: CSS3 with modern design patterns
+- **Build Tool**: Create React App 5.0.1
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📦 Installation
 
-### `npm test`
+1. **Clone the repository**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   ```bash
+   git clone <repository-url>
+   cd resume-analyzer-frontend
+   ```
 
-### `npm run build`
+2. **Install dependencies**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   ```bash
+   npm install
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. **Set up environment variables**
+   Create a `.env` file in the root directory:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   ```env
+   REACT_APP_API_BASE_URL=http://localhost:5000/api
+   ```
 
-### `npm run eject`
+4. **Start the development server**
+   ```bash
+   npm start
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The application will open at [http://localhost:3000](http://localhost:3000).
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🏗️ Project Structure
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```
+src/
+├── components/          # Reusable UI components
+│   └── Navbar.js       # Navigation component
+├── context/            # React Context providers
+│   └── AuthContext.js  # Authentication state management
+├── pages/              # Main application pages
+│   ├── Dashboard.js    # User dashboard with stats
+│   ├── LandingPage.js  # Welcome/landing page
+│   ├── Login.js        # User login form
+│   ├── Register.js     # User registration form
+│   ├── ResumeDetails.js # Individual resume analysis view
+│   ├── ResumeHistory.js # List of all uploaded resumes
+│   └── UploadResume.js # Resume upload interface
+├── styles/             # CSS stylesheets
+├── utils/              # Utility functions
+│   └── api.js         # API configuration and helpers
+└── App.js             # Main application component
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 🚀 Available Scripts
 
-## Learn More
+- **`npm start`** - Runs the app in development mode
+- **`npm run build`** - Builds the app for production
+- **`npm test`** - Launches the test runner
+- **`npm run eject`** - Ejects from Create React App (one-way operation)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🔧 Configuration
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Environment Variables
 
-### Code Splitting
+- `REACT_APP_API_BASE_URL`: Backend API base URL (default: http://localhost:5000/api)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### API Endpoints
 
-### Analyzing the Bundle Size
+The frontend communicates with the backend API for:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- User authentication (login/register)
+- Resume upload and analysis
+- Resume history retrieval
+- File downloads
 
-### Making a Progressive Web App
+## 🎨 UI/UX Features
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- **Modern Design**: Clean, professional interface with intuitive navigation
+- **Loading States**: Skeleton loaders and spinners for better user experience
+- **Error Handling**: User-friendly error messages and recovery options
+- **Responsive Layout**: Optimized for all screen sizes
+- **Accessibility**: Semantic HTML and keyboard navigation support
 
-### Advanced Configuration
+## 🔒 Security
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- JWT token-based authentication
+- Secure API communication
+- Input validation and sanitization
+- Protected routes for authenticated users
 
-### Deployment
+## 📱 Browser Support
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
 
-### `npm run build` fails to minify
+## 🤝 Contributing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🆘 Support
+
+For support and questions, please open an issue in the repository or contact the development team.
+
+---
+
+**Built with ❤️ using React.js**

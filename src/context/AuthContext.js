@@ -54,7 +54,8 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       return {
         success: false,
-        message: error.response?.data?.error || "Login failed",
+        message:
+          error.response?.data?.error || "Login failed. Please try again.",
       };
     }
   }, []);
@@ -73,7 +74,9 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       return {
         success: false,
-        message: error.response?.data?.error || "Registration failed",
+        message:
+          error.response?.data?.error ||
+          "Registration failed. Please try again.",
       };
     }
   }, []);

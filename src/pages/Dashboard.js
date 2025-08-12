@@ -16,7 +16,9 @@ const Dashboard = () => {
         const response = await api.get("/resume/history");
         setResumes(response.data.history || []);
       } catch (err) {
-        setError("Oops! Something went wrong while loading your dashboard 😅");
+        setError(
+          "Oops! Something went wrong while loading your dashboard. Please try again later."
+        );
       } finally {
         setLoading(false);
       }
@@ -39,14 +41,24 @@ const Dashboard = () => {
     };
   }, [resumes]);
 
+  // Score threshold constants
+  const SCORE_THRESHOLDS = {
+    EXCELLENT: 8,
+    GREAT: 7,
+    GOOD: 5,
+  };
+
   // Friendly explanation for the average score
   const getScoreMessage = (score) => {
     if (score === "N/A") return "Upload your first resume to get started! 🚀";
     const numScore = parseFloat(score);
-    if (numScore >= 8) return "Excellent! You're crushing it! 🎉";
-    if (numScore >= 7) return "Great job! Your resumes are looking good! 👍";
-    if (numScore >= 5) return "Good progress! Keep improving! 💪";
-    return "Keep working on it! Every improvement counts! 🔥";
+    return numScore >= SCORE_THRESHOLDS.EXCELLENT
+      ? "Excellent! You're crushing it! 🎉"
+      : numScore >= SCORE_THRESHOLDS.GREAT
+      ? "Great job! Your resumes are looking good! 👍"
+      : numScore >= SCORE_THRESHOLDS.GOOD
+      ? "Good progress! Keep improving! 💪"
+      : "Keep working on it! Every improvement counts! 🔥";
   };
 
   // Loading state with skeletons

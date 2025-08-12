@@ -19,7 +19,7 @@ const ResumeHistory = () => {
         const response = await api.get("/resume/history");
         setResumes(response.data.history || []);
       } catch (err) {
-        setError("Failed to load resume history");
+        setError("Failed to load resume history. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -27,19 +27,29 @@ const ResumeHistory = () => {
     fetchData();
   }, []);
 
+  // Score threshold constants
+  const SCORE_THRESHOLDS = {
+    HIGH: 7,
+    MEDIUM: 5,
+  };
+
   // Score helpers for color and label
   const getScoreClass = (score) => {
     if (score == null) return "no-score";
-    if (score >= 7) return "high-score";
-    if (score >= 5) return "medium-score";
-    return "low-score";
+    return score >= SCORE_THRESHOLDS.HIGH
+      ? "high-score"
+      : score >= SCORE_THRESHOLDS.MEDIUM
+      ? "medium-score"
+      : "low-score";
   };
 
   const getScoreDescription = (score) => {
     if (score == null) return "No score";
-    if (score >= 7) return "Great!";
-    if (score >= 5) return "Good!";
-    return "Needs work";
+    return score >= SCORE_THRESHOLDS.HIGH
+      ? "Great!"
+      : score >= SCORE_THRESHOLDS.MEDIUM
+      ? "Good!"
+      : "Needs work";
   };
 
   // Download original file (guards against duplicate clicks per-item)
@@ -47,15 +57,15 @@ const ResumeHistory = () => {
     if (downloadingId === resumeId) return;
 
     setDownloadingId(resumeId);
-    let url = null;
+    let downloadUrl = null;
+
     try {
       const response = await api.get(`/resume/download/${resumeId}`, {
         responseType: "blob",
       });
-
-      url = window.URL.createObjectURL(new Blob([response.data]));
+      downloadUrl = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
-      link.href = url;
+      link.href = downloadUrl;
       link.setAttribute("download", fileName || "resume.pdf");
       document.body.appendChild(link);
       link.click();
@@ -63,9 +73,7 @@ const ResumeHistory = () => {
     } catch (err) {
       console.error("Download failed:", err);
     } finally {
-      if (url) {
-        window.URL.revokeObjectURL(url);
-      }
+      downloadUrl && window.URL.revokeObjectURL(downloadUrl);
       setDownloadingId(null);
     }
   };
@@ -105,11 +113,12 @@ const ResumeHistory = () => {
 
   // Memoized average ATS score calculation
   const averageScore = useMemo(() => {
-    if (resumes.length === 0) return 0;
-    const validScores = resumes.filter((r) => r.atsScore != null);
-    if (validScores.length === 0) return 0;
+    if (resumes.length === 0) return "0";
+    const validScores = resumes.filter((resume) => resume.atsScore != null);
+    if (validScores.length === 0) return "0";
     return (
-      validScores.reduce((sum, r) => sum + r.atsScore, 0) / validScores.length
+      validScores.reduce((sum, resume) => sum + resume.atsScore, 0) /
+      validScores.length
     ).toFixed(1);
   }, [resumes]);
 

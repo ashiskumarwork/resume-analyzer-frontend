@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../utils/api";
 import "../styles/UploadResume.css";
@@ -13,51 +13,60 @@ const UploadResume = () => {
   const navigate = useNavigate();
 
   // Suggested roles (datalist) - optimized array
-  const commonJobRoles = [
-    "Frontend Developer",
-    "Backend Developer",
-    "Full Stack Developer",
-    "UI/UX Designer",
-    "Data Scientist",
-    "Product Manager",
-    "Project Manager",
-    "Software Engineer",
-    "DevOps Engineer",
-    "QA Engineer",
-    "Marketing Specialist",
-    "Sales Representative",
-    "Customer Support",
-    "Human Resources",
-    "Financial Analyst",
-  ];
+  const COMMON_JOB_ROLES = useMemo(
+    () => [
+      "Frontend Developer",
+      "Backend Developer",
+      "Full Stack Developer",
+      "UI/UX Designer",
+      "Data Scientist",
+      "Product Manager",
+      "Project Manager",
+      "Software Engineer",
+      "DevOps Engineer",
+      "QA Engineer",
+      "Marketing Specialist",
+      "Sales Representative",
+      "Customer Support",
+      "Human Resources",
+      "Financial Analyst",
+    ],
+    []
+  );
+
+  // File validation constants
+  const SUPPORTED_FILE_TYPES = {
+    PDF: "application/pdf",
+    DOCX: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  };
+  const SUPPORTED_EXTENSIONS = useMemo(() => ["pdf", "docx"], []);
 
   // Accepts PDF/DOCX via MIME type or extension and stores the file
-  const validateAndSetFile = useCallback((selectedFile) => {
-    if (!selectedFile) return;
+  const validateAndSetFile = useCallback(
+    (selectedFile) => {
+      if (!selectedFile) return;
 
-    const fileType = selectedFile.type;
-    const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
-    const isValidFile =
-      fileType === "application/pdf" ||
-      fileType ===
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-      fileExtension === "pdf" ||
-      fileExtension === "docx";
+      const fileType = selectedFile.type;
+      const fileExtension = selectedFile.name.split(".").pop().toLowerCase();
+      const isValidFile =
+        fileType === SUPPORTED_FILE_TYPES.PDF ||
+        fileType === SUPPORTED_FILE_TYPES.DOCX ||
+        SUPPORTED_EXTENSIONS.includes(fileExtension);
 
-    if (isValidFile) {
-      setFile(selectedFile);
-      setError("");
-    } else {
-      setFile(null);
-      setError("Please upload a PDF or DOCX file");
-    }
-  }, []);
+      if (isValidFile) {
+        setFile(selectedFile);
+        setError("");
+      } else {
+        setFile(null);
+        setError("Please upload a PDF or DOCX file");
+      }
+    },
+    [SUPPORTED_FILE_TYPES.PDF, SUPPORTED_FILE_TYPES.DOCX, SUPPORTED_EXTENSIONS]
+  );
 
   // File selection via input
   const handleFileChange = useCallback(
-    (e) => {
-      validateAndSetFile(e.target.files[0]);
-    },
+    (e) => validateAndSetFile(e.target.files[0]),
     [validateAndSetFile]
   );
 
@@ -73,9 +82,7 @@ const UploadResume = () => {
       e.preventDefault();
       e.stopPropagation();
       setDragActive(false);
-      if (e.dataTransfer.files?.[0]) {
-        validateAndSetFile(e.dataTransfer.files[0]);
-      }
+      e.dataTransfer.files?.[0] && validateAndSetFile(e.dataTransfer.files[0]);
     },
     [validateAndSetFile]
   );
@@ -127,14 +134,23 @@ const UploadResume = () => {
     setError("");
   }, []);
 
+  // File size formatting constants
+  const FILE_SIZE_BASE = 1024;
+  const FILE_SIZE_UNITS = useMemo(() => ["Bytes", "KB", "MB", "GB"], []);
+
   // Format file size in a friendly unit
-  const formatFileSize = useCallback((bytes) => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const sizes = ["Bytes", "KB", "MB", "GB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
-  }, []);
+  const formatFileSize = useCallback(
+    (bytes) => {
+      if (bytes === 0) return "0 Bytes";
+      const i = Math.floor(Math.log(bytes) / Math.log(FILE_SIZE_BASE));
+      return (
+        parseFloat((bytes / Math.pow(FILE_SIZE_BASE, i)).toFixed(2)) +
+        " " +
+        FILE_SIZE_UNITS[i]
+      );
+    },
+    [FILE_SIZE_BASE, FILE_SIZE_UNITS]
+  );
 
   return (
     <div className="upload-container">
@@ -214,7 +230,7 @@ const UploadResume = () => {
                 list="common-roles"
               />
               <datalist id="common-roles">
-                {commonJobRoles.map((role) => (
+                {COMMON_JOB_ROLES.map((role) => (
                   <option key={role} value={role} />
                 ))}
               </datalist>
